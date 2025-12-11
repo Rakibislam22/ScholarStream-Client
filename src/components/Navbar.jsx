@@ -10,18 +10,19 @@ const Navbar = () => {
         // if (loading) {
         //     return <span className="loading loading-spinner loading-md"></span>
         // }
-// user ? <Avatar></Avatar> :
-        return  (
-            <div className="flex items-center gap-2">
+        // user ? <Avatar></Avatar> :
+        return (
+            <div className="flex items-center gap-1">
                 <Link
                     to={"/auth/login"}
-                    className="rounded-4xl shadow-none bg-transparent md:px-5 btn border-[#0303b8] hover:bg-[#0303b8] hover:text-white"
+                    className="rounded-4xl shadow-none bg-transparent md:px-4 btn btn-outline border-[#0303b8] hover:bg-[#0303b8] hover:!text-white"
                 >
                     Login
                 </Link>
+
                 <Link
                     to={"/auth/signup"}
-                    className="rounded-4xl shadow-none md:px-5 py-px btn border-none bg-[#0303b8] hover:bg-[#000064] text-white"
+                    className="rounded-4xl py-2 shadow-none md:px-4 btn transform-none  bg-[#0303b8] hover:bg-[#000064] text-white hover:!text-white"
                 >
                     Register
                 </Link>
@@ -36,7 +37,7 @@ const Navbar = () => {
         <NavLink to={"/about"} className="lg:ml-6 font-semibold">About</NavLink>
     </>
     return (
-        <nav className="shadow-sm rounded-4xl lg:px-3">
+        <nav className="shadow-sm rounded-4xl lg:px-3 bg-base-100/80">
             <div className='navbar '>
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -58,7 +59,7 @@ const Navbar = () => {
                 </div>
 
                 <div className="navbar-end">
-                   
+
                     {
                         handleLoadingOnNav()
                     }
