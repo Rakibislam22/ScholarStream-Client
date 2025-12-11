@@ -32,7 +32,7 @@ const Navbar = () => {
     }
 
     const links = <>
-        <NavLink to={"/"} className=" font-semibold">Home</NavLink>
+        <NavLink to={"/"} className=" font-semibold ">Home</NavLink>
         <NavLink to={"/scholarships"} className="lg:ml-6  font-semibold">All Scholarships</NavLink>
         <NavLink to={"/about"} className="lg:ml-6 font-semibold">About</NavLink>
     </>
@@ -53,7 +53,7 @@ const Navbar = () => {
                     <Link to={"/"} className="font-bold text-xl sm:text-2xl ">Scholar<span className='text-[#0303b8]'>Stream</span></Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal px-1">
+                    <ul className="menu menu-horizontal px-1 py-2">
                         {links}
                     </ul>
                 </div>

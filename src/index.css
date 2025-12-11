@@ -5,11 +5,10 @@ html {
   scroll-behavior: smooth;
 }
 
-nav a.active {
+nav ul a.active {
     color:#0303b8;
     border-bottom: solid 1px #0303b8;
 }
-nav a:hover{
+nav ul a:hover{
     color:#0303b8;
-    border-bottom: solid 1px #0303b8;
 }
