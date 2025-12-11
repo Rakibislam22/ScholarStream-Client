@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import MainLayouts from "../layouts/MainLayouts";
 import Home from "../pages/Home";
-import { path } from "framer-motion/client";
 import AuthLayouts from "../layouts/AuthLayouts";
 import Signup from "../pages/Signup";
 
@@ -21,6 +20,10 @@ const router = createBrowserRouter([
           {
             path: "/auth/signup",
             element: <Signup></Signup>
+          },
+          {
+            path: "/auth/login",
+            
           }
           
         ]
