@@ -1,17 +1,17 @@
 import React, { use } from 'react';
 import { Link, NavLink } from 'react-router';
-// import { AuthContext } from '../provider/AuthContext';
-// import Avatar from './Avatar';
+import { AuthContext } from '../provider/AuthContext';
+import Avatar from './Avatar';
 
 const Navbar = () => {
-    // const { user, loading } = use(AuthContext);
+    const { user, loading } = use(AuthContext);
 
     const handleLoadingOnNav = () => {
-        // if (loading) {
-        //     return <span className="loading loading-spinner loading-md"></span>
-        // }
-        // user ? <Avatar></Avatar> :
-        return (
+        if (loading) {
+            return <span className="loading loading-spinner loading-md"></span>
+        }
+
+        return user ? <Avatar></Avatar> : (
             <div className="flex items-center gap-1">
                 <Link
                     to={"/auth/login"}

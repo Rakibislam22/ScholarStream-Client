@@ -16,19 +16,19 @@ const Login = () => {
     const {
         register,
         handleSubmit,
-        formState: {errors}
+        formState: { errors }
     } = useForm();
 
 
     const handleLogin = (data) => {
-        
+
         userLogin(data.email, data.password).then(result => {
             setUser(result.user);
             navigate(`${location.state ? location.state : "/"}`)
         }).catch(error => {
             const errorMessage = error.message;
             toast.error(errorMessage);
-            
+
         });
     }
 
@@ -60,11 +60,11 @@ const Login = () => {
 
 
     return (<div className="flex justify-center items-center min-h-screen ">
-        <title>MovieMaster Pro - Login</title>
+        <title>ScholarStream - Login</title>
         <div className="shadow-lg rounded-2xl p-8 w-full max-w-md"> <h2 className="text-3xl font-semibold text-center text-[#0303b8] mb-6">
             Login </h2>
 
-            <form onSubmit={handleSubmit(handleLogin)} className="space-y-5 relative">
+            <form onSubmit={handleSubmit(handleLogin)} className="space-y-5">
                 <div>
                     <label className="pl-4 block text-gray-700 mb-1">Email</label>
                     <input
@@ -77,18 +77,22 @@ const Login = () => {
                     }
                 </div>
 
-                <div>
+                <div className='relative'>
                     <label className="pl-4 block text-gray-700 mb-1">Password</label>
                     <input
                         type={eye ? "text" : "password"} {...register("password", { required: true })}
                         placeholder="Enter your password"
                         className="w-full px-4 py-2 border border-gray-300 rounded-4xl focus:outline-none focus:ring-2 focus:ring-primary"
                     />
-                    <span onClick={() => setEye(!eye)} className='absolute right-3 top-33 cursor-pointer z-10'>
+                    <span onClick={() => setEye(!eye)} className='absolute right-3 top-10 cursor-pointer z-10'>
                         {
                             eye ? <FaEye /> : <FaEyeSlash />
                         }
                     </span>
+
+                    {
+                        errors.password?.type === "required" && <p className="pl-4 text-red-500 text-sm mt-1">Password is required</p>
+                    }
                 </div>
 
                 <div className="text-right">

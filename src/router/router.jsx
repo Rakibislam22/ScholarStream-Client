@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import AuthLayouts from "../layouts/AuthLayouts";
 import Signup from "../pages/Signup";
 import Login from "../pages/Login";
+import About from "../pages/About";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
           }
           
         ]
+      },
+      {
+        path: "/about",
+        element: <About/>
       }
     ],
   },

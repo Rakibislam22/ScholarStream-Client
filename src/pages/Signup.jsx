@@ -18,69 +18,64 @@ const Signup = () => {
 
     const [eye, setEye] = useState(false);
 
-
     const handleSignup = (data) => {
-        const name = e.target.name.value;
-        const photo = e.target.photoUrl.value;
-        const email = e.target.email.value;
-        const password = e.target.password.value
 
 
-        // createUser(email, password)
-        //     .then((result) => {
-        //         const newUser = result.user;
-        //         setUser(newUser);
+        createUser(data.email, data.password)
+            .then((result) => {
+                const newUser = result.user;
+                setUser(newUser);
 
-        //         const userToDatabase = { displayName: newUser.displayName, email: newUser.email, photoUrl: newUser.photoUrl };
+                const userToDatabase = { displayName: newUser.displayName, email: newUser.email, photoUrl: newUser.photoUrl };
 
-        //         fetch('https://movie-master-pro1234-191589w3p-md-rakib-alis-projects.vercel.app/users', {
-        //             method: "POST",
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify(userToDatabase)
-        //         }).then(res => res.json())
-        //             .then(result => {
-        //                 console.log(result);
-        //             })
-        //             .catch((err) => console.error("POST Error:", err));
+                // fetch('https://movie-master-pro1234-191589w3p-md-rakib-alis-projects.vercel.app/users', {
+                //     method: "POST",
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify(userToDatabase)
+                // }).then(res => res.json())
+                //     .then(result => {
+                //         console.log(result);
+                //     })
+                //     .catch((err) => console.error("POST Error:", err));
 
-        //         forUpdateProfile(name, photo)
-        //             .then(() => {
-        //                 navigate('/');
-        //             })
-        //             .catch((err) => toast.error(err.message));
-        //     })
-        //     .catch((error) => {
-        //         toast.error(error.message);
-        //     });
+                forUpdateProfile(data.name, data?.photoUrl)
+                    .then(() => {
+                        navigate('/');
+                    })
+                    .catch((err) => toast.error(err.message));
+            })
+            .catch((error) => {
+                toast.error(error.message);
+            });
     }
 
     const handleGoogle = () => {
-        // google().then(result => {
-        //     const newUser = result.user;
+        google().then(result => {
+            const newUser = result.user;
 
-        //     setUser(newUser);
+            setUser(newUser);
 
-        //     const userToDatabase = { displayName: newUser.displayName, email: newUser.email, photoURL: newUser.photoURL, };
+            const userToDatabase = { displayName: newUser.displayName, email: newUser.email, photoURL: newUser.photoURL, };
 
-        //     navigate("/")
+            navigate("/")
 
-        //     fetch('https://movie-master-pro1234-191589w3p-md-rakib-alis-projects.vercel.app/users', {
-        //         method: "POST",
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify(userToDatabase)
-        //     }).then(res => res.json())
-        //         .then(result => {
-        //             console.log(result);
-        //         })
-        //         .catch((err) => console.error("POST Error:", err));
-        // }).catch(error => {
-        //     const errorMessage = error.message;
-        //     toast.error(errorMessage);
-        // });
+            // fetch('https://movie-master-pro1234-191589w3p-md-rakib-alis-projects.vercel.app/users', {
+            //     method: "POST",
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(userToDatabase)
+            // }).then(res => res.json())
+            //     .then(result => {
+            //         console.log(result);
+            //     })
+            //     .catch((err) => console.error("POST Error:", err));
+        }).catch(error => {
+            const errorMessage = error.message;
+            toast.error(errorMessage);
+        });
     }
 
     return (
@@ -89,7 +84,7 @@ const Signup = () => {
             <div className="shadow-lg rounded-2xl p-8 w-full max-w-md"> <h2 className="text-3xl font-semibold text-center text-[#0303b8] mb-6">
                 Sign Up </h2>
 
-                <form onSubmit={handleSubmit(handleSignup)} className="space-y-5 relative">
+                <form onSubmit={handleSubmit(handleSignup)} className="space-y-5">
 
                     <div>
                         <label className="pl-4 block text-gray-700 mb-1">Name</label>
@@ -124,14 +119,14 @@ const Signup = () => {
                         />
                     </div>
 
-                    <div>
+                    <div className='relative'>
                         <label className="pl-4 block text-gray-700 mb-1">Password</label>
                         <input
                             type={eye ? "text" : "password"} {...register("password", { required: true, pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/ })}
                             placeholder="Enter your password"
                             className="w-full px-4 py-2 border border-gray-300 rounded-4xl focus:outline-none focus:ring-2 focus:ring-primary"
                         />
-                        <span onClick={() => setEye(!eye)} className='absolute right-3 top-78 cursor-pointer z-10'>
+                        <span onClick={() => setEye(!eye)} className='absolute right-3 top-10 cursor-pointer z-10'>
                             {
                                 eye ? <FaEye /> : <FaEyeSlash />
                             }
