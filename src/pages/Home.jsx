@@ -1,11 +1,24 @@
-import React from 'react';
+import React from "react";
+import Hero from "../components/Hero";
+import TopScholarships from "../components/TopScholarships";
+import Testimonials from "../components/Testimonials";
+import Contact from "../components/Contact";
 
-const Home = () => {
+export default function Home() {
     return (
-        <div>
+        <main className="min-h-screen text-gray-900">
+            <Hero />
+            <section className="mt-10">
+                <TopScholarships />
+            </section>
 
-        </div>
+            <section className="mt-16">
+                <Testimonials />
+            </section>
+
+            <section className="mt-16 mb-24">
+                <Contact />
+            </section>
+        </main>
     );
-};
-
-export default Home;
+}

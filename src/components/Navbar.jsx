@@ -36,7 +36,7 @@ const Navbar = () => {
         <NavLink to={"/about"} className="lg:ml-6 font-semibold">About</NavLink>
     </>
     return (
-        <nav className="mt-2 shadow-sm rounded-4xl lg:px-3">
+        <nav className="shadow-sm rounded-4xl lg:px-3">
             <div className='navbar '>
                 <div className="navbar-start">
                     <div className="dropdown">
