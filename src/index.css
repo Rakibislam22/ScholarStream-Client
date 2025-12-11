@@ -1,2 +1,15 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+html {
+  scroll-behavior: smooth;
+}
+
+nav a.active {
+    color:#0303b8;
+    border-bottom: solid 1px #0303b8;
+}
+nav a:hover{
+    color:#0303b8;
+    border-bottom: solid 1px #0303b8;
+}

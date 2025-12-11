@@ -31,11 +31,9 @@ const Navbar = () => {
     }
 
     const links = <>
-        <NavLink to={"/"} className=" font-bold">Home</NavLink>
-        <NavLink to={"/movies"} className="lg:ml-6  font-bold">All Scholarships</NavLink>
-        <NavLink to={"/movies/add"} className="lg:ml-6 font-bold">Add Movie</NavLink>
-        <NavLink to={"/movies/my-collection"} className="lg:ml-6 font-bold">My Collection</NavLink>
-        <NavLink to={"/movies/watchlist"} className="lg:ml-6 font-bold">My Watchlist</NavLink>
+        <NavLink to={"/"} className=" font-semibold">Home</NavLink>
+        <NavLink to={"/scholarships"} className="lg:ml-6  font-semibold">All Scholarships</NavLink>
+        <NavLink to={"/about"} className="lg:ml-6 font-semibold">About</NavLink>
     </>
     return (
         <nav className="mt-2 shadow-sm rounded-4xl lg:px-3">
