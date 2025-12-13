@@ -81,7 +81,7 @@ const Signup = () => {
     return (
         <div className="flex justify-center items-center min-h-screen">
             <title>ScholarStream - Signup</title>
-            <div className="shadow-lg rounded-2xl p-8 w-full max-w-md"> <h2 className="text-3xl font-semibold text-center text-[#0303b8] mb-6">
+            <div className=" rounded-2xl p-8 w-full max-w-md"> <h2 className="text-3xl font-semibold text-center text-[#0303b8] mb-6">
                 Sign Up </h2>
 
                 <form onSubmit={handleSubmit(handleSignup)} className="space-y-5">

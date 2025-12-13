@@ -21,7 +21,7 @@ export default function About() {
                     >
                         <div>
                             <h1 className="text-3xl sm:text-4xl font-extrabold leading-tight">
-                                About ScholarStream
+                                About Scholar<span className='text-[#0303b8]'>Stream</span>
                             </h1>
                             <p className="mt-4 text-lg text-gray-700 max-w-2xl">
                                 ScholarStream curates scholarships from around the world to help students

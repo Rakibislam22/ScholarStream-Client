@@ -2,7 +2,7 @@ import React, { use } from 'react';
 import { AuthContext } from '../provider/AuthContext';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebase.init';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router';
 
 
@@ -24,7 +24,8 @@ const Avatar = () => {
             <ul
                 tabIndex="-1"
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-\[9999\] mt-3 w-52 p-2 shadow">
-                <li className='text-primary font-bold'><Link to={""}>{user.displayName}</Link></li>
+                <li className='text-primary font-bold pl-2.5'>{user.displayName}</li>
+                <li className='text-primary font-bold'><Link to={"/dashboard"}>Dashboard</Link></li>
                 <li className='text-red-400 font-semibold' onClick={handleLogOut}><a>Logout</a></li>
             </ul>
         </div>

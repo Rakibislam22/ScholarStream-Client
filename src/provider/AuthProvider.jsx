@@ -9,9 +9,6 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Load saved theme or default to light
-    const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -54,8 +51,6 @@ const AuthProvider = ({ children }) => {
         forUpdateProfile,
         loading,
         setLoading,
-        theme,
-        setTheme
     };
 
     return <AuthContext value={authData}>
