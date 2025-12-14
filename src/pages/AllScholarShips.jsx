@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 
-
+const API_ENDPOINT = "http://localhost:3000/scholarships";
 
 export default function AllScholarships() {
   const [scholarships, setScholarships] = useState([]);
