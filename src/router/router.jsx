@@ -6,6 +6,7 @@ import Signup from "../pages/Signup";
 import Login from "../pages/Login";
 import About from "../pages/About";
 import AllScholarships from "../pages/AllScholarShips";
+import ScholarshipDetails from "../pages/ScholarshipDetails";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/scholarships",
         element: <AllScholarships></AllScholarships>
+      },
+      {
+        path:"/scholarship/:id",
+        element: <ScholarshipDetails></ScholarshipDetails>
       },
       {
         path: "/auth",

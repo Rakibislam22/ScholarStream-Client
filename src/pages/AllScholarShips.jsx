@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
+import useAxios from "../hooks/useAxios";
 
-const API_ENDPOINT = "http://localhost:3000/scholarships";
 
 export default function AllScholarships() {
+  const axiosIn = useAxios()
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,10 +19,8 @@ export default function AllScholarships() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch(API_ENDPOINT);
-        if (!res.ok) throw new Error("Failed to load scholarships");
-        const data = await res.json();
-        setScholarships(Array.isArray(data) ? data : []);
+        const res = await axiosIn.get('/scholarships');
+        setScholarships(res.data || []);
       } catch (err) {
         setError(err.message);
       } finally {
