@@ -6,7 +6,7 @@ export default function ScholarshipDetails() {
     const { id } = useParams();
     const axiosIn = useAxios();
     const [scholarship, setScholarship] = useState(null);
-    // const [reviews, setReviews] = useState([]);
+    const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -14,11 +14,10 @@ export default function ScholarshipDetails() {
     useEffect(() => {
         async function loadScholarshipDetails() {
             try {
-                const [scholarshipRes] = await Promise.all([
-                    axiosIn.get(`/scholarship/${id}`),
-                    // axiosIn.get(`/reviews?scholarshipId=${id}`)
-                ]);
+                const scholarshipRes = await axiosIn.get(`/scholarship/${id}`);
                 setScholarship(scholarshipRes.data);
+                const reviewsRes = await axiosIn.get(`/reviews/${id}`)
+                setReviews(reviewsRes.data);
 
             } catch (err) {
                 setError(err.message);
@@ -37,7 +36,7 @@ export default function ScholarshipDetails() {
     return (
         <div className="min-h-[80vh] py-15">
             {/* Scholarship details */}
-            <div className="flex max-sm:flex-col justify-center items-center ">
+            <div className="flex max-sm:flex-col justify-start items-center gap-5 pb-15">
                 <div>
                     <img
                         src={scholarship.universityImage}
@@ -68,37 +67,37 @@ export default function ScholarshipDetails() {
             </div>
 
             {/* Reviews */}
-            {/* <div>
+            <div className="md:pl-7">
                 <h2 className="text-xl font-semibold mb-4">Reviews</h2>
                 {reviews.length > 0 ? (
                     reviews.map((review) => (
                         <div
-                            key={review.id}
+                            key={review._id}
                             className="border-t border-gray-200 py-4 text-sm"
                         >
                             <div className="flex items-center mb-2">
                                 <img
-                                    src={review.reviewerImage}
-                                    alt={review.reviewerName}
+                                    src={review.userImage}
+                                    alt={review.userName}
                                     className="h-10 w-10 rounded-full object-cover mr-3"
                                 />
                                 <div>
-                                    <p className="font-semibold">{review.reviewerName}</p>
+                                    <p className="font-semibold">{review.userName}</p>
                                     <p className="text-gray-500 text-xs">
-                                        {new Date(review.date).toLocaleDateString()}
+                                        {review.reviewDate}
                                     </p>
                                 </div>
                             </div>
                             <div className="ml-12">
-                                <p><b>Rating:</b> {review.rating}/5</p>
-                                <p>{review.comment}</p>
+                                <p><b>Rating:</b> {review.ratingPoint}/5</p>
+                                <p>{review.reviewComment}</p>
                             </div>
                         </div>
                     ))
                 ) : (
                     <p>No reviews available.</p>
                 )}
-            </div> */}
+            </div>
         </div>
     );
 }
