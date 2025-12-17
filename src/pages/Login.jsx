@@ -4,12 +4,14 @@ import { AuthContext } from '../provider/AuthContext';
 import { toast } from 'react-toastify';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
+import useAxios from '../hooks/useAxios';
 
 
 const Login = () => {
     const { google, userLogin, setUser } = use(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
+    const axiosIn = useAxios();
 
     const [eye, setEye] = useState(false);
 
@@ -39,17 +41,9 @@ const Login = () => {
             setUser(result.user);
             navigate(`${location.state ? location.state : "/"}`);
             const newUser = result.user;
-            const userToDatabase = { displayName: newUser.displayName, email: newUser.email, photoURL: newUser.photoURL, };
 
-            // fetch('https://movie-master-pro1234-191589w3p-md-rakib-alis-projects.vercel.app/users', {
-            //     method: "POST",
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(userToDatabase)
-            // }).then(res => res.json())
-            //     .then()
-            //     .catch((err) => console.error("POST Error:", err));
+            const userToDatabase = { name: newUser.displayName, email: newUser.email, photoURL: newUser.photoUrl, role: "student" };
+            axiosIn.post('/users', userToDatabase).then();
 
         }).catch(error => {
             const errorMessage = error.message;

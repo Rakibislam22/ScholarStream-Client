@@ -4,11 +4,13 @@ import { AuthContext } from '../provider/AuthContext';
 import { toast } from 'react-toastify';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
+import useAxios from '../hooks/useAxios';
 
 
 const Signup = () => {
 
     const { createUser, setUser, google, forUpdateProfile } = use(AuthContext);
+    const axiosIn = useAxios();
     const {
         register,
         handleSubmit,
@@ -26,19 +28,9 @@ const Signup = () => {
                 const newUser = result.user;
                 setUser(newUser);
 
-                const userToDatabase = { displayName: newUser.displayName, email: newUser.email, photoUrl: newUser.photoUrl };
+                const userToDatabase = { name: newUser.displayName, email: newUser.email, photoURL: newUser.photoUrl, role: "student" };
 
-                // fetch('https://movie-master-pro1234-191589w3p-md-rakib-alis-projects.vercel.app/users', {
-                //     method: "POST",
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                //     body: JSON.stringify(userToDatabase)
-                // }).then(res => res.json())
-                //     .then(result => {
-                //         console.log(result);
-                //     })
-                //     .catch((err) => console.error("POST Error:", err));
+                axiosIn.post('/users', userToDatabase).then();
 
                 forUpdateProfile(data.name, data?.photoUrl)
                     .then(() => {
@@ -57,21 +49,11 @@ const Signup = () => {
 
             setUser(newUser);
 
-            const userToDatabase = { displayName: newUser.displayName, email: newUser.email, photoURL: newUser.photoURL, };
+            const userToDatabase = { name: newUser.displayName, email: newUser.email, photoURL: newUser.photoUrl, role: "student" };
 
             navigate("/")
-
-            // fetch('https://movie-master-pro1234-191589w3p-md-rakib-alis-projects.vercel.app/users', {
-            //     method: "POST",
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(userToDatabase)
-            // }).then(res => res.json())
-            //     .then(result => {
-            //         console.log(result);
-            //     })
-            //     .catch((err) => console.error("POST Error:", err));
+            axiosIn.post('/users', userToDatabase).then();
+            
         }).catch(error => {
             const errorMessage = error.message;
             toast.error(errorMessage);
