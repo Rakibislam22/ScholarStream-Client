@@ -9,6 +9,7 @@ import AllScholarships from "../pages/AllScholarShips";
 import ScholarshipDetails from "../pages/ScholarshipDetails";
 import PrivateRoute from "../provider/PrivateRoute";
 import Dashboard from "../pages/Dashboard";
+import AddScholarship from "../components/AddScholarship";
 
 const router = createBrowserRouter([
   {
@@ -24,12 +25,8 @@ const router = createBrowserRouter([
         element: <AllScholarships></AllScholarships>
       },
       {
-        path:"/scholarship/:id",
+        path: "/scholarship/:id",
         element: <ScholarshipDetails></ScholarshipDetails>
-      },
-      {
-        path:"/dashboard",
-        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>
       },
       {
         path: "/auth",
@@ -43,14 +40,24 @@ const router = createBrowserRouter([
             path: "/auth/login",
             element: <Login></Login>
           }
-          
+
         ]
       },
       {
         path: "/about",
-        element: <About/>
+        element: <About />
       }
     ],
+  },
+  {
+    path: "/dashboard",
+    element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
+    children: [
+      {
+        path:"/dashboard/add-scholarship",
+        element: <AddScholarship></AddScholarship>
+      }
+    ]
   },
 ]);
 

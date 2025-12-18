@@ -1,9 +1,12 @@
 import React from 'react';
+import { Link, Outlet } from 'react-router';
+import { MdAssignmentAdd } from "react-icons/md";
+import Footer from '../components/Footer';
 
 const Dashboard = () => {
     return (
-        <div>
-            <div className="drawer lg:drawer-open pt-10">
+        <div className='max-w-7xl mx-auto'>
+            <div className="drawer lg:drawer-open pb-10 ">
                 <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">
                     {/* Navbar */}
@@ -15,7 +18,10 @@ const Dashboard = () => {
                         <div className="px-4">Dashboard</div>
                     </nav>
                     {/* Page content here */}
-                    <div className="p-4">Page Content</div>
+                    <div className="p-4">
+                        <Outlet></Outlet>
+                        
+                    </div>
                 </div>
 
                 <div className="drawer-side is-drawer-close:overflow-visible">
@@ -25,11 +31,18 @@ const Dashboard = () => {
                         <ul className="menu w-full grow">
                             {/* List item */}
                             <li>
-                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
+                                <Link to={"/"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
                                     {/* Home icon */}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
                                     <span className="is-drawer-close:hidden">Homepage</span>
-                                </button>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/dashboard/add-scholarship"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add Scholarship">
+                                    {/* Add scholarship icon */}
+                                    <MdAssignmentAdd className='my-1.5 inline-block size-4'></MdAssignmentAdd>
+                                    <span className="is-drawer-close:hidden">Add Scholarship</span>
+                                </Link>
                             </li>
 
                             {/* List item */}
@@ -44,6 +57,7 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
+            <Footer></Footer>
         </div>
     );
 };
