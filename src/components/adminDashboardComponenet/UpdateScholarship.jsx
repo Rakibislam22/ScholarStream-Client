@@ -1,9 +1,14 @@
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import useAxios from "../hooks/useAxios";
-import { useState } from "react";
+import useAxios from "../../hooks/useAxios";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router";
 
-const AddScholarship = () => {
+const UpdateScholarship = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const axiosIn = useAxios();
+
     const {
         register,
         handleSubmit,
@@ -11,29 +16,49 @@ const AddScholarship = () => {
         formState: { errors },
     } = useForm();
 
-    const axiosIn = useAxios();
     const [isPending, setIsPending] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    // 🔹 Load existing scholarship data
+    useEffect(() => {
+        axiosIn.get(`/scholarship/${id}`)
+            .then(res => {
+                reset(res.data);
+                setLoading(false);
+            })
+            .catch(() => {
+                toast.error("Failed to load scholarship data");
+                setLoading(false);
+            });
+    }, [id, axiosIn, reset]);
 
     const onSubmit = async (data) => {
+        delete data._id;
         try {
             setIsPending(true);
-            const res = await axiosIn.post("/add-scholarship", data);
+            const res = await axiosIn.patch(`/scholarship/${id}`, data);
 
-            if (res.data?.insertedId) {
-                toast.success("Scholarship added successfully");
-                reset();
+            if (res.data?.modifiedCount > 0) {
+                toast.success("Scholarship updated successfully");
+                navigate("/dashboard/manage-scholarship");
+            } else {
+                toast.info("No changes were made");
             }
         } catch (err) {
-            toast.error("Failed to add scholarship");
+            toast.error("Failed to update scholarship");
             console.error(err);
         } finally {
             setIsPending(false);
         }
     };
 
+    if (loading) {
+        return <p className="text-center mt-10">Loading...</p>;
+    }
+
     return (
         <div className="max-w-5xl mx-auto bg-base-200 p-6 rounded-lg shadow">
-            <h2 className="text-2xl font-semibold mb-6">Add Scholarship</h2>
+            <h2 className="text-2xl font-semibold mb-6">Update Scholarship</h2>
 
             <form
                 onSubmit={handleSubmit(onSubmit)}
@@ -191,13 +216,14 @@ const AddScholarship = () => {
                         type="email"
                         {...register("postedUserEmail", { required: true })}
                         className="input input-bordered w-full"
+                        readOnly
                     />
                 </div>
 
                 {/* Submit */}
                 <div className="md:col-span-2">
                     <button disabled={isPending} className="btn btn-primary w-full">
-                        {isPending ? "Submitting..." : "Add Scholarship"}
+                        {isPending ? "Updating..." : "Update Scholarship"}
                     </button>
                 </div>
             </form>
@@ -205,4 +231,4 @@ const AddScholarship = () => {
     );
 };
 
-export default AddScholarship;
+export default UpdateScholarship;

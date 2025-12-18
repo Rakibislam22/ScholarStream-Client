@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Outlet } from 'react-router';
 import { MdAssignmentAdd, MdManageHistory } from "react-icons/md";
 import Footer from '../components/Footer';
+import { ToastContainer } from 'react-toastify';
 
 const Dashboard = () => {
     return (
@@ -20,7 +21,7 @@ const Dashboard = () => {
                     {/* Page content here */}
                     <div className="p-4">
                         <Outlet></Outlet>
-                        
+
                     </div>
                 </div>
 
@@ -65,6 +66,17 @@ const Dashboard = () => {
                 </div>
             </div>
             <Footer></Footer>
+
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                closeOnClick={false}
+                pauseOnHover
+                pauseOnFocusLoss={false}
+                draggable={false}
+                theme="colored"
+                style={{ zIndex: 9999 }}
+            />
         </div>
     );
 };

@@ -9,8 +9,9 @@ import AllScholarships from "../pages/AllScholarShips";
 import ScholarshipDetails from "../pages/ScholarshipDetails";
 import PrivateRoute from "../provider/PrivateRoute";
 import Dashboard from "../pages/Dashboard";
-import AddScholarship from "../components/AddScholarship";
-import ManageScholarships from "../components/ManageScholarships";
+import AddScholarship from "../components/adminDashboardComponenet/AddScholarship";
+import ManageScholarships from "../components/adminDashboardComponenet/ManageScholarships";
+import UpdateScholarship from "../components/adminDashboardComponenet/UpdateScholarship";
 
 const router = createBrowserRouter([
   {
@@ -55,13 +56,17 @@ const router = createBrowserRouter([
     element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
     children: [
       {
-        path:"/dashboard/add-scholarship",
+        path: "/dashboard/add-scholarship",
         element: <AddScholarship></AddScholarship>
       },
       {
-        path:"/dashboard/manage-scholarship",
+        path: "/dashboard/manage-scholarship",
         element: <ManageScholarships></ManageScholarships>
       },
+      {
+        path: "/dashboard/update-scholarship/:id",
+        element: <UpdateScholarship></UpdateScholarship>
+      }
     ]
   },
 ]);

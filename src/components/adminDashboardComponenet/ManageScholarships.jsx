@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router";
 import { toast } from "react-toastify";
-import useAxios from "../hooks/useAxios";
+import useAxios from "../../hooks/useAxios";
 
 const ManageScholarships = () => {
     const axiosIn = useAxios();
