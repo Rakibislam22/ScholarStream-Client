@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router';
-import { MdAnalytics, MdAssignmentAdd, MdManageAccounts, MdManageHistory, MdReviews } from "react-icons/md";
+import { MdAnalytics, MdAssignmentAdd, MdManageAccounts, MdManageHistory, MdManageSearch, MdReviews } from "react-icons/md";
 import Footer from '../components/Footer';
 import { ToastContainer } from 'react-toastify';
 import { FaUser } from 'react-icons/fa6';
@@ -43,7 +43,7 @@ const Dashboard = () => {
                                 </Link>
                             </li>
                             {
-                                role === 'admin' && <>
+                                role === 'Admin' && <>
                                     <li>
                                         <Link to={"/dashboard"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Analytics">
                                             {/* Add scholarship icon */}
@@ -76,7 +76,7 @@ const Dashboard = () => {
                             }
 
                             {
-                                role == 'student' && <>
+                                role == 'Student' && <>
 
                                     <li>
                                         <Link to={"/dashboard/my-applications"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Application">
@@ -92,6 +92,19 @@ const Dashboard = () => {
                                             <span className="is-drawer-close:hidden">My Reviews</span>
                                         </Link>
                                     </li>
+                                </>
+                            }
+
+                            {
+                                role == 'Moderator' && <>
+                                    <li>
+                                        <Link to={"/dashboard/manage-applications"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Application">
+                                            {/* Profile icon */}
+                                            <MdManageSearch className='my-1.5 inline-block size-6'></MdManageSearch>
+                                            <span className="is-drawer-close:hidden">Manage Application</span>
+                                        </Link>
+                                    </li>
+
                                 </>
                             }
 

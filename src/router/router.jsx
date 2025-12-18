@@ -22,6 +22,8 @@ import AdminRoute from "./AdminRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import StudentRoute from "./StudentRoute";
 import MyReviews from "../components/studentDashboardComponents.jsx/MyReviews";
+import ModeratorRoute from "./ModeratorRoute";
+import ManageAppliedApplications from "../components/modaretorDashboardComponent.jsx/ManageAppliedApplications";
 
 const router = createBrowserRouter([
   {
@@ -104,6 +106,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/my-reviews",
         element: <StudentRoute><MyReviews></MyReviews></StudentRoute>
+      },
+      {
+        path: "/dashboard/manage-applications",
+        element: <ModeratorRoute><ManageAppliedApplications></ManageAppliedApplications></ModeratorRoute>
       }
     ]
   },

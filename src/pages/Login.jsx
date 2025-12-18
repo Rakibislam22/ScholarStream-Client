@@ -42,7 +42,7 @@ const Login = () => {
             navigate(`${location.state ? location.state : "/"}`);
             const newUser = result.user;
 
-            const userToDatabase = { name: newUser.displayName, email: newUser.email, photoURL: newUser.photoUrl, role: "student" };
+            const userToDatabase = { name: newUser.displayName, email: newUser.email, photoURL: newUser.photoUrl, role: "Student" };
             axiosIn.post('/users', userToDatabase).then();
 
         }).catch(error => {

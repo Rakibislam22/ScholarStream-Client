@@ -1,10 +1,9 @@
 import React, { use } from 'react';
+import { AuthContext } from '../provider/AuthContext';
 import useRole from '../hooks/useRole';
 import Loading from '../components/Loading';
-import { AuthContext } from '../provider/AuthContext';
 
-
-const StudentRoute = ({ children }) => {
+const ModeratorRoute = ({ children }) => {
     const { loading } = use(AuthContext);
     const { role, roleLoading } = useRole()
 
@@ -12,11 +11,11 @@ const StudentRoute = ({ children }) => {
         return <Loading></Loading>
     }
 
-    if (role !== 'Student') {
+    if (role !== 'Moderator') {
         return <div>You are not allow</div>
     }
 
     return children;
 };
 
-export default StudentRoute;
+export default ModeratorRoute;
