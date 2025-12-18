@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router";
-import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
+import Swal from "sweetalert2";
 
 const ManageScholarships = () => {
     const axiosIn = useAxios();
@@ -22,15 +22,29 @@ const ManageScholarships = () => {
             return axiosIn.delete(`/scholarship/${id}`);
         },
         onSuccess: () => {
-            toast.success("Scholarship deleted");
             queryClient.invalidateQueries(["scholarships"]);
         },
     });
 
     const handleDelete = (id) => {
-        if (confirm("Are you sure you want to delete this scholarship?")) {
-            deleteScholarship(id);
-        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteScholarship(id);
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Scholarship has been deleted.",
+                    icon: "success"
+                });
+            }
+        });
     };
 
     if (isLoading) return <p className="text-center mt-10">Loading...</p>;

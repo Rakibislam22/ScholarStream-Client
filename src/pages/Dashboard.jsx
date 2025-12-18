@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router';
-import { MdAssignmentAdd, MdManageHistory } from "react-icons/md";
+import { MdAssignmentAdd, MdManageAccounts, MdManageHistory } from "react-icons/md";
 import Footer from '../components/Footer';
 import { ToastContainer } from 'react-toastify';
 
@@ -50,6 +50,13 @@ const Dashboard = () => {
                                     {/* Manage scholarship icon */}
                                     <MdManageHistory className='my-1.5 inline-block size-6'></MdManageHistory >
                                     <span className="is-drawer-close:hidden">Manage Scholarship</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/dashboard/manage-users"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
+                                    {/* Manage scholarship icon */}
+                                    <MdManageAccounts className='my-1.5 inline-block size-6'></MdManageAccounts>
+                                    <span className="is-drawer-close:hidden">Manage Users</span>
                                 </Link>
                             </li>
 

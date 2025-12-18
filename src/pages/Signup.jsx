@@ -28,7 +28,7 @@ const Signup = () => {
                 const newUser = result.user;
                 setUser(newUser);
 
-                const userToDatabase = { name: newUser.displayName, email: newUser.email, photoURL: newUser.photoUrl, role: "student" };
+                const userToDatabase = { name: data.name, email: data.email, photoURL: data?.photoUrl, role: "student" };
 
                 axiosIn.post('/users', userToDatabase).then();
 
@@ -53,7 +53,7 @@ const Signup = () => {
 
             navigate("/")
             axiosIn.post('/users', userToDatabase).then();
-            
+
         }).catch(error => {
             const errorMessage = error.message;
             toast.error(errorMessage);
