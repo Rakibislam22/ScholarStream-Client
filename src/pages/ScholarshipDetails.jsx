@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import useAxios from "../hooks/useAxios";
+import { AuthContext } from "../provider/AuthContext";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 export default function ScholarshipDetails() {
     const { id } = useParams();
+    const { user } = use(AuthContext);
     const axiosIn = useAxios();
     const [scholarship, setScholarship] = useState(null);
     const [reviews, setReviews] = useState([]);
@@ -33,6 +37,50 @@ export default function ScholarshipDetails() {
 
     if (!scholarship) return <p>No scholarship found!</p>;
 
+
+    const handleApply = async () => {
+        if(!user) {
+            toast.warning("Please Login First");
+            navigate('/auth/login');
+            return;
+        }
+        const result = await Swal.fire({
+            title: "Confirm Application",
+            html: `
+          <p><b>Application Fee:</b> $${scholarship.applicationFees}</p>
+          <p><b>Service Charge:</b> $${scholarship.serviceCharge}</p>
+        `,
+            showCancelButton: true,
+            confirmButtonText: "Pay & Apply",
+        });
+
+        if (!result.isConfirmed) return;
+
+        // Save application in DB
+        const applicationData = {
+            scholarshipId: scholarship._id,
+            userId: user.uid,
+            userName: user.displayName,
+            userEmail: user.email,
+            universityName: scholarship.universityName,
+            scholarshipCategory: scholarship.scholarshipCategory,
+            degree: scholarship.degree,
+            applicationFees: scholarship.applicationFees,
+            serviceCharge: scholarship.serviceCharge,
+        };
+
+        const appRes = await axiosIn.post("/applications", applicationData);
+
+        // Stripe payment redirect
+        const paymentRes = await axiosIn.post("/create-payment-intent", {
+            amount:
+                scholarship.applicationFees + scholarship.serviceCharge,
+            applicationId: appRes.data.insertedId,
+        });
+
+        window.location.href = paymentRes.data.url;
+    };
+
     return (
         <div className="min-h-[80vh] py-15">
             {/* Scholarship details */}
@@ -56,7 +104,7 @@ export default function ScholarshipDetails() {
                         <p><b>Stipend/Coverage:</b> {scholarship.scholarshipCategory}</p>
                     </div>
                     <button
-                        onClick={() => navigate(`/checkout/${id}`)}
+                        onClick={handleApply}
                         className="mt-5 bg-[#0303b8] hover:bg-[#000064] text-white py-3 px-6 rounded-4xl"
                     >
                         Apply for Scholarship

@@ -15,6 +15,8 @@ import UpdateScholarship from "../components/adminDashboardComponenet/UpdateScho
 import ManageUsers from "../components/adminDashboardComponenet/ManageUsers";
 import Analytics from "../components/adminDashboardComponenet/Analytics";
 import MyProfile from "../pages/MyProfile";
+import PaymentSuccess from "../pages/PaymentSuccess";
+import PaymentCancel from "../pages/PaymentCancel";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
       {
         path: "/scholarship/:id",
         element: <ScholarshipDetails></ScholarshipDetails>
+      },
+      {
+        path:"/payment-success/:applicationId",
+        element: <PrivateRoute><PaymentSuccess></PaymentSuccess></PrivateRoute>
+      },
+      {
+        path:"/payment-cancel",
+        element: <PrivateRoute><PaymentCancel></PaymentCancel></PrivateRoute>
       },
       {
         path: "/auth",
