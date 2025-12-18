@@ -11,7 +11,7 @@ const ManageAppliedApplications = () => {
     const [feedbackApp, setFeedbackApp] = useState(null);
     const [feedback, setFeedback] = useState("");
 
-    // 🔹 Fetch all applications
+    // Fetch all applications
     const { data: applications = [], isLoading } = useQuery({
         queryKey: ["admin-applications"],
         queryFn: async () => {
@@ -20,7 +20,7 @@ const ManageAppliedApplications = () => {
         },
     });
 
-    // 🔹 Status update
+    // Status update
     const { mutate: updateStatus } = useMutation({
         mutationFn: ({ id, status }) =>
             axiosIn.patch(`/applications/status/${id}`, { status }),
@@ -30,7 +30,7 @@ const ManageAppliedApplications = () => {
         },
     });
 
-    // 🔹 Feedback
+    // Feedback
     const { mutate: submitFeedback } = useMutation({
         mutationFn: ({ id, feedback }) =>
             axiosIn.patch(`/applications/feedback/${id}`, { feedback }),
@@ -42,7 +42,7 @@ const ManageAppliedApplications = () => {
         },
     });
 
-    // 🔹 Reject
+    // Reject
     const { mutate: rejectApp } = useMutation({
         mutationFn: (id) =>
             axiosIn.patch(`/applications/reject/${id}`),

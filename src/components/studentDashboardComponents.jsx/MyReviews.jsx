@@ -13,7 +13,7 @@ const MyReviews = () => {
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState("");
 
-    // 🔹 Fetch my reviews
+    // Fetch my reviews
     const { data: reviews = [], isLoading } = useQuery({
         queryKey: ["my-reviews", user?.email],
         enabled: !!user?.email,
@@ -25,7 +25,7 @@ const MyReviews = () => {
         },
     });
 
-    // 🔹 Update review
+    // Update review
     const { mutate: updateReview } = useMutation({
         mutationFn: ({ id, ratingPoint, reviewComment }) =>
             axiosIn.patch(`/reviews/${id}`, {
@@ -39,7 +39,7 @@ const MyReviews = () => {
         },
     });
 
-    // 🔹 Delete review
+    // Delete review
     const { mutate: deleteReview } = useMutation({
         mutationFn: (id) => axiosIn.delete(`/reviews/${id}`),
         onSuccess: () => {

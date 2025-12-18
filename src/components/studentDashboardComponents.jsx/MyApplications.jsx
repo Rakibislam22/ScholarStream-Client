@@ -40,6 +40,7 @@ const MyApplications = () => {
         try {
             await axiosIn.post("/reviews", {
                 scholarshipId: reviewApp.scholarshipId,
+                scholarshipName: reviewApp.scholarshipName,
                 universityName: reviewApp.universityName,
                 userName: user.displayName,
                 userImage: user.photoURL,

@@ -104,6 +104,13 @@ const Dashboard = () => {
                                             <span className="is-drawer-close:hidden">Manage Application</span>
                                         </Link>
                                     </li>
+                                    <li>
+                                        <Link to={"/dashboard/all-reviews"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Review">
+                                            {/* Profile icon */}
+                                            <MdReviews className='my-1.5 inline-block size-6'></MdReviews>
+                                            <span className="is-drawer-close:hidden">Manage Review</span>
+                                        </Link>
+                                    </li>
 
                                 </>
                             }

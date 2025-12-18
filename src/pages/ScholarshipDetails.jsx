@@ -63,6 +63,7 @@ export default function ScholarshipDetails() {
             userName: user.displayName,
             userEmail: user.email,
             universityName: scholarship.universityName,
+            scholarshipName: scholarship.scholarshipName,
             scholarshipCategory: scholarship.scholarshipCategory,
             degree: scholarship.degree,
             applicationFees: scholarship.applicationFees,

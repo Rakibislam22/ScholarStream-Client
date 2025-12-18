@@ -24,6 +24,7 @@ import StudentRoute from "./StudentRoute";
 import MyReviews from "../components/studentDashboardComponents.jsx/MyReviews";
 import ModeratorRoute from "./ModeratorRoute";
 import ManageAppliedApplications from "../components/modaretorDashboardComponent.jsx/ManageAppliedApplications";
+import AllReviews from "../components/modaretorDashboardComponent.jsx/AllReviews";
 
 const router = createBrowserRouter([
   {
@@ -110,6 +111,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/manage-applications",
         element: <ModeratorRoute><ManageAppliedApplications></ManageAppliedApplications></ModeratorRoute>
+      },
+      {
+        path: "/dashboard/all-reviews",
+        element: <ModeratorRoute><AllReviews></AllReviews></ModeratorRoute>
       }
     ]
   },
