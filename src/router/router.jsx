@@ -13,6 +13,7 @@ import AddScholarship from "../components/adminDashboardComponenet/AddScholarshi
 import ManageScholarships from "../components/adminDashboardComponenet/ManageScholarships";
 import UpdateScholarship from "../components/adminDashboardComponenet/UpdateScholarship";
 import ManageUsers from "../components/adminDashboardComponenet/ManageUsers";
+import Analytics from "../components/adminDashboardComponenet/Analytics";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
     children: [
+      {
+        index: true,
+        Component: Analytics
+      },
       {
         path: "/dashboard/add-scholarship",
         element: <AddScholarship></AddScholarship>
