@@ -10,6 +10,7 @@ import ScholarshipDetails from "../pages/ScholarshipDetails";
 import PrivateRoute from "../provider/PrivateRoute";
 import Dashboard from "../pages/Dashboard";
 import AddScholarship from "../components/AddScholarship";
+import ManageScholarships from "../components/ManageScholarships";
 
 const router = createBrowserRouter([
   {
@@ -56,7 +57,11 @@ const router = createBrowserRouter([
       {
         path:"/dashboard/add-scholarship",
         element: <AddScholarship></AddScholarship>
-      }
+      },
+      {
+        path:"/dashboard/manage-scholarship",
+        element: <ManageScholarships></ManageScholarships>
+      },
     ]
   },
 ]);
