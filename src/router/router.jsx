@@ -14,6 +14,7 @@ import ManageScholarships from "../components/adminDashboardComponenet/ManageSch
 import UpdateScholarship from "../components/adminDashboardComponenet/UpdateScholarship";
 import ManageUsers from "../components/adminDashboardComponenet/ManageUsers";
 import Analytics from "../components/adminDashboardComponenet/Analytics";
+import MyProfile from "../pages/MyProfile";
 
 const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/manage-users",
         element: <ManageUsers></ManageUsers>
+      },
+      {
+        path: "/dashboard/profile",
+        element: <MyProfile></MyProfile>
       }
     ]
   },

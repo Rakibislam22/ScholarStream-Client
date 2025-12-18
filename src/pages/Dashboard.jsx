@@ -3,6 +3,7 @@ import { Link, Outlet } from 'react-router';
 import { MdAnalytics, MdAssignmentAdd, MdManageAccounts, MdManageHistory } from "react-icons/md";
 import Footer from '../components/Footer';
 import { ToastContainer } from 'react-toastify';
+import { FaUser } from 'react-icons/fa6';
 
 const Dashboard = () => {
     return (
@@ -69,11 +70,11 @@ const Dashboard = () => {
 
                             {/* List item */}
                             <li>
-                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Settings">
-                                    {/* Settings icon */}
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-6"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
-                                    <span className="is-drawer-close:hidden">Settings</span>
-                                </button>
+                                <Link to={"/dashboard/profile"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Profile">
+                                    {/* Profile icon */}
+                                    <FaUser className='my-1.5 inline-block size-6'></FaUser>
+                                    <span className="is-drawer-close:hidden">My Profile</span>
+                                </Link>
                             </li>
                         </ul>
                     </div>
