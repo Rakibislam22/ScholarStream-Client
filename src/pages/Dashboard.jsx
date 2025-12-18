@@ -4,8 +4,11 @@ import { MdAnalytics, MdAssignmentAdd, MdManageAccounts, MdManageHistory } from 
 import Footer from '../components/Footer';
 import { ToastContainer } from 'react-toastify';
 import { FaUser } from 'react-icons/fa6';
+import useRole from '../hooks/useRole';
+import { SiHtmlacademy } from "react-icons/si";
 
 const Dashboard = () => {
+    const { role } = useRole();
     return (
         <div className='max-w-7xl mx-auto'>
             <div className="drawer lg:drawer-open pb-10 min-h-[80vh]">
@@ -39,32 +42,44 @@ const Dashboard = () => {
                                     <span className="is-drawer-close:hidden">Homepage</span>
                                 </Link>
                             </li>
+                            {
+                                role === 'admin' && <>
+                                    <li>
+                                        <Link to={"/dashboard"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Analytics">
+                                            {/* Add scholarship icon */}
+                                            <MdAnalytics className='my-1.5 inline-block size-6'></MdAnalytics>
+                                            <span className="is-drawer-close:hidden">Analytics</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to={"/dashboard/add-scholarship"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add Scholarship">
+                                            {/* Add scholarship icon */}
+                                            <MdAssignmentAdd className='my-1.5 inline-block size-6'></MdAssignmentAdd>
+                                            <span className="is-drawer-close:hidden">Add Scholarship</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to={"/dashboard/manage-scholarship"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Scholarship">
+                                            {/* Manage scholarship icon */}
+                                            <MdManageHistory className='my-1.5 inline-block size-6'></MdManageHistory >
+                                            <span className="is-drawer-close:hidden">Manage Scholarship</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to={"/dashboard/manage-users"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
+                                            {/* Manage scholarship icon */}
+                                            <MdManageAccounts className='my-1.5 inline-block size-6'></MdManageAccounts>
+                                            <span className="is-drawer-close:hidden">Manage Users</span>
+                                        </Link>
+                                    </li>
+                                </>
+                            }
+
                             <li>
-                                <Link to={"/dashboard"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Analytics">
-                                    {/* Add scholarship icon */}
-                                    <MdAnalytics className='my-1.5 inline-block size-6'></MdAnalytics>
-                                    <span className="is-drawer-close:hidden">Analytics</span>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to={"/dashboard/add-scholarship"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add Scholarship">
-                                    {/* Add scholarship icon */}
-                                    <MdAssignmentAdd className='my-1.5 inline-block size-6'></MdAssignmentAdd>
-                                    <span className="is-drawer-close:hidden">Add Scholarship</span>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to={"/dashboard/manage-scholarship"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Scholarship">
-                                    {/* Manage scholarship icon */}
-                                    <MdManageHistory className='my-1.5 inline-block size-6'></MdManageHistory >
-                                    <span className="is-drawer-close:hidden">Manage Scholarship</span>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to={"/dashboard/manage-users"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
-                                    {/* Manage scholarship icon */}
-                                    <MdManageAccounts className='my-1.5 inline-block size-6'></MdManageAccounts>
-                                    <span className="is-drawer-close:hidden">Manage Users</span>
+                                <Link to={"/dashboard/my-applications"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Application">
+                                    {/* Profile icon */}
+                                    <SiHtmlacademy className='my-1.5 inline-block size-6'></SiHtmlacademy>
+                                    <span className="is-drawer-close:hidden">My Application</span>
                                 </Link>
                             </li>
 

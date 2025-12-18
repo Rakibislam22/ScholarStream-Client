@@ -17,6 +17,9 @@ import Analytics from "../components/adminDashboardComponenet/Analytics";
 import MyProfile from "../pages/MyProfile";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import PaymentCancel from "../pages/PaymentCancel";
+import MyApplications from "../components/studentDashboardComponents.jsx/MyApplications";
+import AdminRoute from "./AdminRoute";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 const router = createBrowserRouter([
   {
@@ -36,11 +39,11 @@ const router = createBrowserRouter([
         element: <ScholarshipDetails></ScholarshipDetails>
       },
       {
-        path:"/payment-success/:applicationId",
+        path: "/payment-success/:applicationId",
         element: <PrivateRoute><PaymentSuccess></PaymentSuccess></PrivateRoute>
       },
       {
-        path:"/payment-cancel",
+        path: "/payment-cancel",
         element: <PrivateRoute><PaymentCancel></PaymentCancel></PrivateRoute>
       },
       {
@@ -70,27 +73,31 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: Analytics
+        Component: DashboardLayout
       },
       {
         path: "/dashboard/add-scholarship",
-        element: <AddScholarship></AddScholarship>
+        element: <AdminRoute><AddScholarship></AddScholarship></AdminRoute>
       },
       {
         path: "/dashboard/manage-scholarship",
-        element: <ManageScholarships></ManageScholarships>
+        element: <AdminRoute><ManageScholarships></ManageScholarships></AdminRoute>
       },
       {
         path: "/dashboard/update-scholarship/:id",
-        element: <UpdateScholarship></UpdateScholarship>
+        element: <AdminRoute><UpdateScholarship></UpdateScholarship></AdminRoute>
       },
       {
         path: "/dashboard/manage-users",
-        element: <ManageUsers></ManageUsers>
+        element: <AdminRoute><ManageUsers></ManageUsers></AdminRoute>
       },
       {
         path: "/dashboard/profile",
         element: <MyProfile></MyProfile>
+      },
+      {
+        path: "/dashboard/my-applications",
+        element: <PrivateRoute><MyApplications></MyApplications></PrivateRoute>
       }
     ]
   },

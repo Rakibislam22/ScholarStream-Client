@@ -67,6 +67,7 @@ export default function ScholarshipDetails() {
             degree: scholarship.degree,
             applicationFees: scholarship.applicationFees,
             serviceCharge: scholarship.serviceCharge,
+            universityCountry: scholarship.universityCountry,
         };
 
         const appRes = await axiosIn.post("/applications", applicationData);
