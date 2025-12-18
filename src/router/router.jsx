@@ -20,6 +20,8 @@ import PaymentCancel from "../pages/PaymentCancel";
 import MyApplications from "../components/studentDashboardComponents.jsx/MyApplications";
 import AdminRoute from "./AdminRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
+import StudentRoute from "./StudentRoute";
+import MyReviews from "../components/studentDashboardComponents.jsx/MyReviews";
 
 const router = createBrowserRouter([
   {
@@ -97,7 +99,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard/my-applications",
-        element: <PrivateRoute><MyApplications></MyApplications></PrivateRoute>
+        element: <StudentRoute><MyApplications></MyApplications></StudentRoute>
+      },
+      {
+        path: "/dashboard/my-reviews",
+        element: <StudentRoute><MyReviews></MyReviews></StudentRoute>
       }
     ]
   },

@@ -40,8 +40,10 @@ const MyApplications = () => {
         try {
             await axiosIn.post("/reviews", {
                 scholarshipId: reviewApp.scholarshipId,
+                universityName: reviewApp.universityName,
                 userName: user.displayName,
                 userImage: user.photoURL,
+                userEmail: user.email,
                 ratingPoint: rating,
                 reviewComment: comment,
                 reviewDate: new Date().toLocaleDateString(),

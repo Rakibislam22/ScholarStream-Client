@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router';
-import { MdAnalytics, MdAssignmentAdd, MdManageAccounts, MdManageHistory } from "react-icons/md";
+import { MdAnalytics, MdAssignmentAdd, MdManageAccounts, MdManageHistory, MdReviews } from "react-icons/md";
 import Footer from '../components/Footer';
 import { ToastContainer } from 'react-toastify';
 import { FaUser } from 'react-icons/fa6';
@@ -75,13 +75,27 @@ const Dashboard = () => {
                                 </>
                             }
 
-                            <li>
-                                <Link to={"/dashboard/my-applications"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Application">
-                                    {/* Profile icon */}
-                                    <SiHtmlacademy className='my-1.5 inline-block size-6'></SiHtmlacademy>
-                                    <span className="is-drawer-close:hidden">My Application</span>
-                                </Link>
-                            </li>
+                            {
+                                role == 'student' && <>
+
+                                    <li>
+                                        <Link to={"/dashboard/my-applications"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Application">
+                                            {/* Profile icon */}
+                                            <SiHtmlacademy className='my-1.5 inline-block size-6'></SiHtmlacademy>
+                                            <span className="is-drawer-close:hidden">My Application</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to={"/dashboard/my-reviews"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Reviews">
+                                            {/* Profile icon */}
+                                            <MdReviews className='my-1.5 inline-block size-6'></MdReviews>
+                                            <span className="is-drawer-close:hidden">My Reviews</span>
+                                        </Link>
+                                    </li>
+                                </>
+                            }
+
+
 
                             {/* List item */}
                             <li>
