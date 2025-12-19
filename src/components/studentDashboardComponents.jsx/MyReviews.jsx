@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../provider/AuthContext";
 import useAxios from "../../hooks/useAxios";
 import { toast } from "react-toastify";
+import Loading from "../Loading";
 
 const MyReviews = () => {
     const { user } = useContext(AuthContext);
@@ -54,7 +55,7 @@ const MyReviews = () => {
         setComment(review.reviewComment);
     };
 
-    if (isLoading) return <p className="text-center mt-10">Loading...</p>;
+    if (isLoading) return <Loading></Loading>;
 
     return (
         <div className="bg-base-200 p-4 rounded-lg">

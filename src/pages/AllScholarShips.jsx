@@ -1,26 +1,46 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import useAxios from "../hooks/useAxios";
-
+import Loading from "../components/Loading";
 
 export default function AllScholarships() {
-  const axiosIn = useAxios()
+  const axiosIn = useAxios();
+  const navigate = useNavigate();
+
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
-  const [subjectFilter, setSubjectFilter] = useState("");
+  const [subjectFilter, setSubjectFilter] = useState(""); 
   const [locationFilter, setLocationFilter] = useState("");
 
-  const navigate = useNavigate();
+  const [sortBy, setSortBy] = useState("date");
+  const [order, setOrder] = useState("desc");
+
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 8;
 
   useEffect(() => {
     async function load() {
       try {
-        const res = await axiosIn.get('/scholarships');
-        setScholarships(res.data || []);
+        setLoading(true);
+        const res = await axiosIn.get("/scholarships", {
+          params: {
+            search,
+            category: categoryFilter,
+            country: locationFilter,
+            sortBy,
+            order,
+            page,
+            limit,
+          },
+        });
+
+        setScholarships(res.data.data || []);
+        setTotalPages(res.data.totalPages || 1);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -28,9 +48,9 @@ export default function AllScholarships() {
       }
     }
     load();
-  }, []);
+  }, [search, categoryFilter, locationFilter, sortBy, order, page]);
 
-  // 🔹 dropdown values
+  // Dropdown values (from loaded data)
   const categories = useMemo(
     () =>
       [...new Set(scholarships.map((s) => s.scholarshipCategory).filter(Boolean))],
@@ -49,45 +69,32 @@ export default function AllScholarships() {
     [scholarships]
   );
 
-  // 🔹 frontend filter (backend data)
-  const filtered = useMemo(() => {
-    const q = search.toLowerCase();
-
-    return scholarships.filter((s) => {
-      if (categoryFilter && s.scholarshipCategory !== categoryFilter) return false;
-      if (subjectFilter && s.subjectCategory !== subjectFilter) return false;
-      if (locationFilter && s.universityCountry !== locationFilter) return false;
-
-      if (!q) return true;
-
-      return (
-        s.scholarshipName?.toLowerCase().includes(q) ||
-        s.universityName?.toLowerCase().includes(q) ||
-        s.degree?.toLowerCase().includes(q)
-      );
-    });
-  }, [scholarships, search, categoryFilter, subjectFilter, locationFilter]);
-
-  if (loading) return <p>Loading scholarships…</p>;
+  if (loading) return <Loading></Loading>;
   if (error) return <p className="text-red-600">{error}</p>;
 
   return (
     <div className="py-8 min-h-dvh">
       <h1 className="text-2xl font-semibold mb-6">All Scholarships</h1>
 
-      {/* Filters */}
+      {/* Filters & Sort */}
       <div className="flex flex-wrap gap-4 mb-6">
         <input
           type="search"
           placeholder="Search by name, university, degree"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
           className="px-4 py-2 border border-blue-100 rounded-lg w-full md:w-1/3 focus:outline-none focus:ring-2 ring-blue-300"
         />
 
         <select
           value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
+          onChange={(e) => {
+            setCategoryFilter(e.target.value);
+            setPage(1);
+          }}
           className="px-3 py-2 border border-blue-100 rounded-lg focus:outline-none focus:ring-2 ring-blue-300"
         >
           <option value="">All Categories</option>
@@ -109,7 +116,10 @@ export default function AllScholarships() {
 
         <select
           value={locationFilter}
-          onChange={(e) => setLocationFilter(e.target.value)}
+          onChange={(e) => {
+            setLocationFilter(e.target.value);
+            setPage(1);
+          }}
           className="px-3 py-2 border border-blue-100 rounded-lg focus:outline-none focus:ring-2 ring-blue-300"
         >
           <option value="">All Countries</option>
@@ -118,28 +128,45 @@ export default function AllScholarships() {
           ))}
         </select>
 
+        {/*Sort */}
+        <select
+          value={`${sortBy}-${order}`}
+          onChange={(e) => {
+            const [s, o] = e.target.value.split("-");
+            setSortBy(s);
+            setOrder(o);
+          }}
+          className="px-3 py-2 border border-blue-100 rounded-lg focus:outline-none focus:ring-2 ring-blue-300"
+        >
+          <option value="date-desc">Newest</option>
+          <option value="date-asc">Oldest</option>
+          <option value="fee-asc">Fee: Low → High</option>
+          <option value="fee-desc">Fee: High → Low</option>
+        </select>
+
+        {/* Clear */}
         <button
           onClick={() => {
             setSearch("");
             setCategoryFilter("");
             setSubjectFilter("");
             setLocationFilter("");
+            setPage(1);
           }}
           className={`btn text-xl text-red-500 rounded-full 
-          ${(locationFilter || subjectFilter || categoryFilter || search) ?
-              "block" : "hidden"}`
-          }
+          ${(locationFilter || subjectFilter || categoryFilter || search)
+              ? "block"
+              : "hidden"}`}
         >
           X
         </button>
       </div>
 
-      {/* Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filtered.map((s) => (
+        {scholarships.map((s) => (
           <div
             key={s._id}
-            className="border border-blue-100  rounded-lg overflow-hidden shadow-sm focus:outline-none focus:ring-2 ring-blue-300"
+            className="border border-blue-100 rounded-lg overflow-hidden shadow-sm focus:outline-none focus:ring-2 ring-blue-300"
           >
             <div className="h-36 flex items-center justify-center bg-gray-50">
               <img
@@ -153,7 +180,7 @@ export default function AllScholarships() {
               <h3 className="font-semibold text-lg">{s.scholarshipName}</h3>
               <p className="text-lg text-gray-500">{s.universityName}</p>
 
-              <div className="flex flex-col max-sm:flex-row xl:flex-row  justify-between items-center py-3">
+              <div className="flex flex-col max-sm:flex-row xl:flex-row justify-between items-center py-3">
                 <p className="text-sm">
                   <b>Category:</b> {s.scholarshipCategory}
                 </p>
@@ -161,7 +188,6 @@ export default function AllScholarships() {
                   <b>Country:</b> {s.universityCountry}
                 </p>
               </div>
-
 
               <button
                 onClick={() => navigate(`/scholarship/${s._id}`)}
@@ -173,7 +199,20 @@ export default function AllScholarships() {
           </div>
         ))}
       </div>
+
+      {/*Pagination */}
+      <div className="flex justify-center gap-2 mt-8">
+        {[...Array(totalPages).keys()].map((n) => (
+          <button
+            key={n}
+            onClick={() => setPage(n + 1)}
+            className={`btn btn-sm ${page === n + 1 ? "btn-primary" : "btn-outline"
+              }`}
+          >
+            {n + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
-

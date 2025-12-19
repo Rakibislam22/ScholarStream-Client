@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
+import Loading from "../Loading";
 
 const UpdateScholarship = () => {
     const { id } = useParams();
@@ -53,7 +54,7 @@ const UpdateScholarship = () => {
     };
 
     if (loading) {
-        return <p className="text-center mt-10">Loading...</p>;
+        return <Loading></Loading>
     }
 
     return (

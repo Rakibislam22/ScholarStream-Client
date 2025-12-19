@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
 import { toast } from "react-toastify";
+import Loading from "../Loading";
 
 const ManageAppliedApplications = () => {
     const axiosIn = useAxios();
@@ -52,7 +53,7 @@ const ManageAppliedApplications = () => {
         },
     });
 
-    if (isLoading) return <p className="text-center mt-10">Loading...</p>;
+    if (isLoading) return <Loading></Loading>
 
     return (
         <div className="bg-base-200 p-4 rounded-lg">

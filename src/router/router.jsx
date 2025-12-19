@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         element: <PrivateRoute><PaymentSuccess></PaymentSuccess></PrivateRoute>
       },
       {
-        path: "/payment-cancel",
+        path: "/payment-cancel/:applicationId",
         element: <PrivateRoute><PaymentCancel></PaymentCancel></PrivateRoute>
       },
       {

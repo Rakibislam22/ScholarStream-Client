@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
+import Loading from "../Loading";
 
 const ManageUsers = () => {
     const axiosIn = useAxios();
@@ -66,7 +67,7 @@ const ManageUsers = () => {
             ? users
             : users.filter((u) => u.role === roleFilter);
 
-    if (isLoading) return <p className="text-center mt-10">Loading...</p>;
+    if (isLoading) return <Loading></Loading>;
 
     return (
         <div className="p-4 bg-base-200 rounded-lg">

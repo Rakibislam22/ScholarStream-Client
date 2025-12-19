@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
 import { toast } from "react-toastify";
+import Loading from "../Loading";
 
 const AllReviews = () => {
     const axiosIn = useAxios();
@@ -25,7 +26,7 @@ const AllReviews = () => {
     });
 
     if (isLoading) {
-        return <p className="text-center mt-10">Loading reviews...</p>;
+        return <Loading></Loading>
     }
 
     return (

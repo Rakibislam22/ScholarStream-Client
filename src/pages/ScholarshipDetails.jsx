@@ -4,6 +4,7 @@ import useAxios from "../hooks/useAxios";
 import { AuthContext } from "../provider/AuthContext";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import Loading from "../components/Loading";
 
 export default function ScholarshipDetails() {
     const { id } = useParams();
@@ -32,7 +33,7 @@ export default function ScholarshipDetails() {
         loadScholarshipDetails();
     }, [id]);
 
-    if (loading) return <p>Loading scholarship details...</p>;
+    if (loading) return <Loading></Loading>;
     if (error) return <p className="text-red-600">{error}</p>;
 
     if (!scholarship) return <p>No scholarship found!</p>;

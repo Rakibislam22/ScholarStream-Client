@@ -27,7 +27,7 @@ export default function Hero() {
                             <motion.button
                                 whileHover={{ scale: 1.03 }}
                                 whileTap={{ scale: 0.97 }}
-                                onClick={() => navigate && navigate("/search")}
+                                onClick={() => navigate && navigate("/scholarships")}
                                 className="inline-flex items-center rounded-md bg-white text-indigo-700 px-5 py-3 font-medium shadow"
                             >
                                 Search Scholarship

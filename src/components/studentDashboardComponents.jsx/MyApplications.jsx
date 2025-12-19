@@ -4,6 +4,7 @@ import { AuthContext } from "../../provider/AuthContext";
 import useAxios from "../../hooks/useAxios";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import Loading from "../Loading";
 
 const MyApplications = () => {
     const { user } = useContext(AuthContext);
@@ -96,7 +97,7 @@ const MyApplications = () => {
         }
     };
 
-    if (isLoading) return <p className="text-center mt-10">Loading...</p>;
+    if (isLoading) return <Loading></Loading>;
 
     return (
         <div className="bg-base-200 p-4 rounded-lg">
