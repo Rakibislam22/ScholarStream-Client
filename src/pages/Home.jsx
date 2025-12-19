@@ -1,24 +1,58 @@
 import React from "react";
+import { motion } from "framer-motion";
 import Hero from "../components/Hero";
 import TopScholarships from "../components/TopScholarships";
 import Testimonials from "../components/Testimonials";
 import Contact from "../components/Contact";
 
+// reusable animation
+const sectionVariant = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.6, ease: "easeOut" }
+    }
+};
+
 export default function Home() {
     return (
         <main className="min-h-screen text-gray-900">
+            {/* Hero (loads instantly, no scroll delay) */}
             <Hero />
-            <section className="mt-10">
+
+            {/* Top Scholarships */}
+            <motion.section
+                className="mt-10"
+                variants={sectionVariant}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+            >
                 <TopScholarships />
-            </section>
+            </motion.section>
 
-            <section className="mt-16">
+            {/* Testimonials */}
+            <motion.section
+                className="mt-16"
+                variants={sectionVariant}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+            >
                 <Testimonials />
-            </section>
+            </motion.section>
 
-            <section className="mt-16 mb-24">
+            {/* Contact */}
+            <motion.section
+                className="mt-16 mb-24"
+                variants={sectionVariant}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+            >
                 <Contact />
-            </section>
+            </motion.section>
         </main>
     );
 }

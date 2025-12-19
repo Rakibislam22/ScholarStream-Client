@@ -30,7 +30,7 @@ const Analytics = () => {
     const { data: scholarships = [] } = useQuery({
         queryKey: ["scholarships"],
         queryFn: async () => {
-            const res = await axiosIn.get("/scholarships");
+            const res = await axiosIn.get("/analytics/scholarships");
             return res.data;
         },
     });
@@ -85,7 +85,7 @@ const Analytics = () => {
                 </div>
             </div>
 
-            {/* 📊 Charts */}
+            {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Bar Chart */}
                 <div className="bg-base-200 p-4 rounded-lg shadow">

@@ -7,11 +7,11 @@ const ManageScholarships = () => {
     const axiosIn = useAxios();
     const queryClient = useQueryClient();
 
-    // 🔹 Fetch all scholarships
+    // Fetch all scholarships
     const { data: scholarships = [], isLoading } = useQuery({
         queryKey: ["scholarships"],
         queryFn: async () => {
-            const res = await axiosIn.get("/scholarships");
+            const res = await axiosIn.get("/analytics/scholarships");
             return res.data;
         },
     });

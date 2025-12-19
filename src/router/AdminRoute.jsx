@@ -2,6 +2,7 @@ import React, { use } from 'react';
 import useRole from '../hooks/useRole';
 import Loading from '../components/Loading';
 import { AuthContext } from '../provider/AuthContext';
+import Forbidden from '../pages/Forbidden';
 
 
 const AdminRoute = ({ children }) => {
@@ -13,7 +14,7 @@ const AdminRoute = ({ children }) => {
     }
 
     if (role !== 'Admin') {
-        return <div>You are not allow</div>
+        return <Forbidden></Forbidden>
     }
 
     return children;

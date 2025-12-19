@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import useAxios from "../hooks/useAxios";
 import Loading from "../components/Loading";
+import { motion } from "framer-motion";
 
 export default function AllScholarships() {
   const axiosIn = useAxios();
@@ -13,7 +14,7 @@ export default function AllScholarships() {
 
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
-  const [subjectFilter, setSubjectFilter] = useState(""); 
+  const [subjectFilter, setSubjectFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
 
   const [sortBy, setSortBy] = useState("date");
@@ -50,7 +51,6 @@ export default function AllScholarships() {
     load();
   }, [search, categoryFilter, locationFilter, sortBy, order, page]);
 
-  // Dropdown values (from loaded data)
   const categories = useMemo(
     () =>
       [...new Set(scholarships.map((s) => s.scholarshipCategory).filter(Boolean))],
@@ -69,7 +69,7 @@ export default function AllScholarships() {
     [scholarships]
   );
 
-  if (loading) return <Loading></Loading>;
+  if (loading) return <Loading />;
   if (error) return <p className="text-red-600">{error}</p>;
 
   return (
@@ -128,7 +128,6 @@ export default function AllScholarships() {
           ))}
         </select>
 
-        {/*Sort */}
         <select
           value={`${sortBy}-${order}`}
           onChange={(e) => {
@@ -144,7 +143,6 @@ export default function AllScholarships() {
           <option value="fee-desc">Fee: High → Low</option>
         </select>
 
-        {/* Clear */}
         <button
           onClick={() => {
             setSearch("");
@@ -162,10 +160,15 @@ export default function AllScholarships() {
         </button>
       </div>
 
+      {/* Cards with on-scroll animation */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {scholarships.map((s) => (
-          <div
+        {scholarships.map((s, i) => (
+          <motion.div
             key={s._id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: i * 0.05 }}
             className="border border-blue-100 rounded-lg overflow-hidden shadow-sm focus:outline-none focus:ring-2 ring-blue-300"
           >
             <div className="h-36 flex items-center justify-center bg-gray-50">
@@ -196,18 +199,17 @@ export default function AllScholarships() {
                 View Details
               </button>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
-      {/*Pagination */}
+      {/* Pagination */}
       <div className="flex justify-center gap-2 mt-8">
         {[...Array(totalPages).keys()].map((n) => (
           <button
             key={n}
             onClick={() => setPage(n + 1)}
-            className={`btn btn-sm ${page === n + 1 ? "btn-primary" : "btn-outline"
-              }`}
+            className={`btn btn-sm ${page === n + 1 ? "btn-primary" : "btn-outline"}`}
           >
             {n + 1}
           </button>

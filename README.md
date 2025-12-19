@@ -1,16 +1,126 @@
-# React + Vite
+# ScholarStream-Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ScholarStream-Client is the frontend application for connecting students with curated scholarship opportunities worldwide. This React-based client provides a seamless user interface to explore, apply for, and review scholarships, making the process user-friendly and transparent.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Live Demo
 
-## React Compiler
+Explore the live application:
+[ScholarStream Live Demo](https://scholarstream-1.web.app/)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Table of Contents
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Environment Setup](#environment-setup)
+- [Folder Structure](#folder-structure)
+- [Contributing](#contributing)
+- [License](#license)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Features
+
+This client application supports the following features:
+- **Scholarships Discovery**:
+  - View scholarships by categories, countries, and deadlines.
+  - Top-listed scholarships with detailed information.
+- **Application Process**:
+  - Easy online application, payment integration, and management of submissions.
+- **Dashboard**:
+  - A personalized area to manage scholarships, applications, and feedbacks.
+- **Transparent Details**:
+  - Degree, requirements, and fees required for each scholarship.
+  - Aggregated reviews and ratings.
+- **Testimonial and Support**:
+  - Testimonials from past successful applicants.
+  - Integrated support and FAQ pages.
+
+---
+
+## Technologies Used
+
+This repository utilizes the following technologies:
+- **Frontend Framework**: React.js
+- **Styling/Animations**:
+  - Tailwind CSS for styling.
+  - Framer Motion for animations.
+- **State Management**: React Context API.
+- **HTTP Client**: Axios for server communication.
+- **Routing**: React Router for navigation.
+
+---
+
+## Environment Setup
+
+### Prerequisites
+Ensure you have:
+- Node.js and npm (or yarn) installed.
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Rakibislam22/ScholarStream-Client.git
+   cd ScholarStream-Client
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Setup environment variables in `.env.local`:
+   ```
+   REACT_APP_API_BASE_URL=https://your-backend-api-url
+   ```
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+5. Build for production:
+   ```bash
+   npm run build
+   ```
+
+---
+
+## Folder Structure
+
+A brief overview of the project directory:
+```
+ScholarStream-Client/
+├── public/
+│   └── index.html       # Entry HTML file
+├── src/
+│   ├── components/      # Reusable components (Navbar, Footer, etc.)
+│   ├── pages/           # App pages (About, Dashboard, etc.)
+│   ├── hooks/           # Custom Hooks
+│   ├── App.jsx          # Root application component
+├── .env.local           # Environment configuration
+└── README.md
+```
+
+---
+
+## Contributing
+
+Contributions are encouraged! To contribute:
+1. Fork the repository.
+2. Create a new feature branch.
+3. Commit your changes and open a pull request.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE).
+
+---
+
+## Acknowledgements
+
+- Built and maintained with care by [Md Rakib Ali](https://github.com/Rakibislam22).

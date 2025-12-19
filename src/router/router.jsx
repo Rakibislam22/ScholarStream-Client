@@ -25,6 +25,8 @@ import MyReviews from "../components/studentDashboardComponents.jsx/MyReviews";
 import ModeratorRoute from "./ModeratorRoute";
 import ManageAppliedApplications from "../components/modaretorDashboardComponent.jsx/ManageAppliedApplications";
 import AllReviews from "../components/modaretorDashboardComponent.jsx/AllReviews";
+import Forbidden from "../pages/Forbidden";
+import ErrorPage from "../pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
@@ -118,6 +120,14 @@ const router = createBrowserRouter([
       }
     ]
   },
+  {
+    path: "/forbidden",
+    element: <Forbidden />,
+  },
+  {
+    path: "*",
+    element: <ErrorPage />,
+  }
 ]);
 
 export default router;
