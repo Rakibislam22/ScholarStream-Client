@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router";
 import useAxios from "../hooks/useAxios";
 import { FaCheckCircle } from "react-icons/fa";
+import Loading from "../components/Loading";
 
 const PaymentSuccess = () => {
     const { applicationId } = useParams();
@@ -35,7 +36,7 @@ const PaymentSuccess = () => {
 
     if (loading) {
         return (
-            <p className="text-center mt-20">Loading payment details...</p>
+            <Loading></Loading>
         );
     }
 

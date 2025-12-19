@@ -69,7 +69,7 @@ export default function AllScholarships() {
     [scholarships]
   );
 
-  if (loading) return <Loading />;
+
   if (error) return <p className="text-red-600">{error}</p>;
 
   return (
@@ -161,47 +161,62 @@ export default function AllScholarships() {
       </div>
 
       {/* Cards with on-scroll animation */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {scholarships.map((s, i) => (
-          <motion.div
-            key={s._id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: i * 0.05 }}
-            className="border border-blue-100 rounded-lg overflow-hidden shadow-sm focus:outline-none focus:ring-2 ring-blue-300"
-          >
-            <div className="h-36 flex items-center justify-center bg-gray-50">
-              <img
-                src={s.universityImage}
-                alt={s.universityName}
-                className="h-full object-contain"
-              />
-            </div>
-
-            <div className="p-4 text-center">
-              <h3 className="font-semibold text-lg">{s.scholarshipName}</h3>
-              <p className="text-lg text-gray-500">{s.universityName}</p>
-
-              <div className="flex flex-col max-sm:flex-row xl:flex-row justify-between items-center py-3">
-                <p className="text-sm">
-                  <b>Category:</b> {s.scholarshipCategory}
-                </p>
-                <p className="text-sm">
-                  <b>Country:</b> {s.universityCountry}
-                </p>
+      {/* Cards / Loading / Not Found */}
+      {loading ? (
+        <Loading />
+      ) : scholarships.length === 0 ? (
+        <div className="col-span-full text-center py-16 text-gray-500">
+          <p className="text-lg font-semibold">No scholarships found</p>
+          <p className="text-sm mt-2">
+            Try adjusting your search or filters
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {scholarships.map((s, i) => (
+            <motion.div
+              key={s._id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+              className="border border-blue-100 rounded-lg overflow-hidden shadow-sm focus:outline-none focus:ring-2 ring-blue-300"
+            >
+              <div className="h-36 flex items-center justify-center bg-gray-50">
+                <img
+                  src={s.universityImage}
+                  alt={s.universityName}
+                  className="h-full object-contain"
+                />
               </div>
 
-              <button
-                onClick={() => navigate(`/scholarship/${s._id}`)}
-                className="mt-3 w-full bg-[#0303b8] hover:bg-[#000064] text-white py-2 rounded-3xl"
-              >
-                View Details
-              </button>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+              <div className="p-4 text-center">
+                <h3 className="font-semibold text-lg">{s.scholarshipName}</h3>
+                <p className="text-lg text-gray-500">{s.universityName}</p>
+
+                <div className="flex flex-col max-sm:flex-row xl:flex-row justify-between items-center py-3">
+                  <p className="text-sm">
+                    <b>Category:</b> {s.scholarshipCategory}
+                  </p>
+                  <p className="text-sm">
+                    <b>Country:</b> {s.universityCountry}
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => navigate(`/scholarship/${s._id}`)}
+                  className="mt-3 w-full bg-[#0303b8] hover:bg-[#000064] text-white py-2 rounded-3xl"
+                >
+                  View Details
+                </button>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
+
+
+      {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
 
       {/* Pagination */}
       <div className="flex justify-center gap-2 mt-8">
