@@ -8,7 +8,7 @@ import Loading from "../components/Loading";
 
 export default function ScholarshipDetails() {
     const { id } = useParams();
-    const { user } = use(AuthContext);
+    const { user, theme } = React.useContext(AuthContext);
     const axiosIn = useAxios();
     const [scholarship, setScholarship] = useState(null);
     const [reviews, setReviews] = useState([]);
@@ -21,9 +21,8 @@ export default function ScholarshipDetails() {
             try {
                 const scholarshipRes = await axiosIn.get(`/scholarship/${id}`);
                 setScholarship(scholarshipRes.data);
-                const reviewsRes = await axiosIn.get(`/reviews/${id}`)
+                const reviewsRes = await axiosIn.get(`/reviews/${id}`);
                 setReviews(reviewsRes.data);
-
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -33,31 +32,29 @@ export default function ScholarshipDetails() {
         loadScholarshipDetails();
     }, [id]);
 
-    if (loading) return <Loading></Loading>;
+    if (loading) return <Loading />;
     if (error) return <p className="text-red-600">{error}</p>;
-
     if (!scholarship) return <p>No scholarship found!</p>;
 
-
     const handleApply = async () => {
-        if(!user) {
+        if (!user) {
             toast.warning("Please Login First");
-            navigate('/auth/login');
+            navigate("/auth/login");
             return;
         }
+
         const result = await Swal.fire({
             title: "Confirm Application",
             html: `
-          <p><b>Application Fee:</b> $${scholarship.applicationFees}</p>
-          <p><b>Service Charge:</b> $${scholarship.serviceCharge}</p>
-        `,
+              <p><b>Application Fee:</b> $${scholarship.applicationFees}</p>
+              <p><b>Service Charge:</b> $${scholarship.serviceCharge}</p>
+            `,
             showCancelButton: true,
             confirmButtonText: "Pay & Apply",
         });
 
         if (!result.isConfirmed) return;
 
-        // Save application in DB
         const applicationData = {
             scholarshipId: scholarship._id,
             userId: user.uid,
@@ -74,10 +71,8 @@ export default function ScholarshipDetails() {
 
         const appRes = await axiosIn.post("/applications", applicationData);
 
-        // Stripe payment redirect
         const paymentRes = await axiosIn.post("/create-payment-intent", {
-            amount:
-                scholarship.applicationFees + scholarship.serviceCharge,
+            amount: scholarship.applicationFees + scholarship.serviceCharge,
             applicationId: appRes.data.insertedId,
         });
 
@@ -85,70 +80,137 @@ export default function ScholarshipDetails() {
     };
 
     return (
-        <div className="min-h-[80vh] py-15">
-            {/* Scholarship details */}
-            <div className="flex max-sm:flex-col justify-start items-center gap-5 pb-15">
-                <div>
+        <div className="min-h-[80vh] py-12">
+            {/* HERO / IMAGE */}
+            <div className="max-w-6xl mx-auto">
+                <div
+                    className={`rounded-2xl p-10 flex justify-center items-center mb-10
+        ${theme === "dark"
+                            ? "bg-gradient-to-br from-gray-800 to-gray-900"
+                            : "bg-gradient-to-br from-gray-50 to-white"}`}
+                >
                     <img
                         src={scholarship.universityImage}
                         alt={scholarship.scholarshipName}
-                        className="w-full h-64 object-contain mb-4"
+                        className="h-50 object-contain drop-shadow-md"
                     />
                 </div>
-                <div>
-                    <h1 className="text-2xl font-bold">{scholarship.scholarshipName}</h1>
-                    <h2 className="text-lg text-gray-500">{scholarship.universityName}</h2>
-                    <p className="text-gray-700 mt-4">{scholarship.description}</p>
-                    <div className="mt-4 flex flex-wrap gap-4">
-                        <p><b>University World Rank:</b> {scholarship.universityWorldRank}</p>
-                        <p><b>Deadline:</b> {scholarship.applicationDeadline}</p>
-                        <p><b>Location:</b> {scholarship.universityCountry}</p>
-                        <p><b>Application Fees:</b> {scholarship.applicationFees}</p>
-                        <p><b>Stipend/Coverage:</b> {scholarship.scholarshipCategory}</p>
+
+                {/* DETAILS CARD */}
+                <div
+                    className={`rounded-2xl p-8 shadow-sm
+        ${theme === "dark"
+                            ? "bg-gray-900 text-gray-300"
+                            : "bg-white text-gray-700"}`}
+                >
+                    <h1
+                        className={`text-3xl font-bold mb-1
+          ${theme === "dark" ? "text-gray-100" : "text-gray-900"}`}
+                    >
+                        {scholarship.scholarshipName}
+                    </h1>
+
+                    <h2
+                        className={`text-lg
+          ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+                    >
+                        {scholarship.universityName}
+                    </h2>
+
+                    <p className="mt-5 leading-relaxed text-justify">
+                        {scholarship.description}
+                    </p>
+
+                    {/* META INFO (CHIPS) */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-8 text-lg">
+                        {[
+                            ["University Rank", scholarship.universityWorldRank],
+                            ["Deadline", scholarship.applicationDeadline],
+                            ["Country", scholarship.universityCountry],
+                            ["Application Fee", `$${scholarship.applicationFees}`],
+                            ["Coverage", scholarship.scholarshipCategory],
+                        ].map(([label, value]) => (
+                            <div
+                                key={label}
+                                className={`rounded-lg px-4 py-3
+              ${theme === "dark"
+                                        ? "bg-gray-800 text-gray-300"
+                                        : "bg-gray-50 text-gray-700"}`}
+                            >
+                                <p className="text-sm opacity-70">{label}</p>
+                                <p className="font-semibold">{value}</p>
+                            </div>
+                        ))}
                     </div>
+
+                    {/* CTA */}
                     <button
                         onClick={handleApply}
-                        className="mt-5 bg-[#0303b8] hover:bg-[#000064] text-white py-3 px-6 rounded-4xl"
+                        className="mt-8 bg-[#0303b8] hover:bg-[#000064]
+          text-white py-3 px-10 rounded-full
+          shadow-md hover:shadow-lg transition-all"
                     >
                         Apply for Scholarship
                     </button>
                 </div>
-
-
             </div>
 
-            {/* Reviews */}
-            <div className="md:pl-7">
-                <h2 className="text-xl font-semibold mb-4">Reviews</h2>
+            {/* REVIEWS */}
+            <div className="max-w-6xl mx-auto mt-14">
+                <h2
+                    className={`text-2xl font-semibold mb-6
+        ${theme === "dark" ? "text-gray-100" : "text-gray-900"}`}
+                >
+                    Reviews
+                </h2>
+
                 {reviews.length > 0 ? (
-                    reviews.map((review) => (
-                        <div
-                            key={review._id}
-                            className="border-t border-gray-200 py-4 text-sm"
-                        >
-                            <div className="flex items-center mb-2">
-                                <img
-                                    src={review.userImage}
-                                    alt={review.userName}
-                                    className="h-10 w-10 rounded-full object-cover mr-3"
-                                />
-                                <div>
-                                    <p className="font-semibold">{review.userName}</p>
-                                    <p className="text-gray-500 text-xs">
-                                        {review.reviewDate}
-                                    </p>
+                    <div className="space-y-4">
+                        {reviews.map((review) => (
+                            <div
+                                key={review._id}
+                                className={`rounded-xl p-5
+              ${theme === "dark"
+                                        ? "bg-gray-800 text-gray-300"
+                                        : "bg-gray-50 text-gray-700"}`}
+                            >
+                                <div className="flex items-center gap-4 mb-3">
+                                    <img
+                                        src={review.userImage}
+                                        alt={review.userName}
+                                        className="h-11 w-11 rounded-full object-cover"
+                                    />
+                                    <div>
+                                        <p
+                                            className={`font-semibold
+                    ${theme === "dark"
+                                                    ? "text-gray-100"
+                                                    : "text-gray-900"}`}
+                                        >
+                                            {review.userName}
+                                        </p>
+                                        <p className="text-xs opacity-70">
+                                            {review.reviewDate}
+                                        </p>
+                                    </div>
                                 </div>
+
+                                <p className="text-sm">
+                                    <b>Rating:</b> {review.ratingPoint}/5
+                                </p>
+                                <p className="mt-1 text-sm leading-relaxed">
+                                    {review.reviewComment}
+                                </p>
                             </div>
-                            <div className="ml-12">
-                                <p><b>Rating:</b> {review.ratingPoint}/5</p>
-                                <p>{review.reviewComment}</p>
-                            </div>
-                        </div>
-                    ))
+                        ))}
+                    </div>
                 ) : (
-                    <p>No reviews available.</p>
+                    <p className={theme === "dark" ? "text-gray-400" : "text-gray-500"}>
+                        No reviews available.
+                    </p>
                 )}
             </div>
         </div>
     );
+
 }

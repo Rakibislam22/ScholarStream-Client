@@ -2,6 +2,7 @@ import React, { use } from 'react';
 import { Link, NavLink } from 'react-router';
 import { AuthContext } from '../provider/AuthContext';
 import Avatar from './Avatar';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
     const { user, loading } = use(AuthContext);
@@ -59,7 +60,9 @@ const Navbar = () => {
                 </div>
 
                 <div className="navbar-end">
-
+                    <div className='pr-5'>
+                        <ThemeToggle></ThemeToggle>
+                    </div>
                     {
                         handleLoadingOnNav()
                     }

@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 
 const MainLayouts = () => {
     return (
-        <div className='bg-gray-50'>
+        <div className=''>
             <div className='max-w-7xl mx-auto px-3 relative '>
                 <div className='sticky top-2 z-50'>
                     <Navbar></Navbar>

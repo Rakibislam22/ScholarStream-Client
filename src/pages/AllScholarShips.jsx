@@ -1,14 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { use, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import useAxios from "../hooks/useAxios";
 import Loading from "../components/Loading";
 import { motion } from "framer-motion";
+import { AuthContext } from "../provider/AuthContext";
 
 export default function AllScholarships() {
   const axiosIn = useAxios();
   const navigate = useNavigate();
+  const { theme } = use(AuthContext);
 
   const [scholarships, setScholarships] = useState([]);
+  const [allScholarships, setAllScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -31,6 +34,7 @@ export default function AllScholarships() {
         const res = await axiosIn.get("/scholarships", {
           params: {
             search,
+            subject: subjectFilter,
             category: categoryFilter,
             country: locationFilter,
             sortBy,
@@ -41,6 +45,7 @@ export default function AllScholarships() {
         });
 
         setScholarships(res.data.data || []);
+        setAllScholarships(prev => (prev.length ? prev : res.data.data));
         setTotalPages(res.data.totalPages || 1);
       } catch (err) {
         setError(err.message);
@@ -49,32 +54,48 @@ export default function AllScholarships() {
       }
     }
     load();
-  }, [search, categoryFilter, locationFilter, sortBy, order, page]);
+  }, [search, subjectFilter, categoryFilter, locationFilter, sortBy, order, page]);
 
   const categories = useMemo(
     () =>
-      [...new Set(scholarships.map((s) => s.scholarshipCategory).filter(Boolean))],
-    [scholarships]
+      [...new Set(
+        allScholarships.map(s => s.scholarshipCategory).filter(Boolean)
+      )],
+    [allScholarships]
   );
 
   const subjectCategories = useMemo(
     () =>
-      [...new Set(scholarships.map((s) => s.subjectCategory).filter(Boolean))],
-    [scholarships]
+      [...new Set(
+        allScholarships.map(s => s.subjectCategory).filter(Boolean)
+      )],
+    [allScholarships]
   );
 
   const locations = useMemo(
     () =>
-      [...new Set(scholarships.map((s) => s.universityCountry).filter(Boolean))],
-    [scholarships]
+      [...new Set(
+        allScholarships.map(s => s.universityCountry).filter(Boolean)
+      )],
+    [allScholarships]
   );
-
 
   if (error) return <p className="text-red-600">{error}</p>;
 
+  const inputBase =
+    "px-4 py-2 rounded-lg focus:outline-none focus:ring-2";
+  const borderColor =
+    theme === "dark" ? "border-gray-700" : "border-blue-100";
+  const bgColor =
+    theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-white";
+  const ringColor =
+    theme === "dark" ? "ring-indigo-300" : "ring-blue-300";
+
   return (
     <div className="py-8 min-h-dvh">
-      <h1 className="text-2xl font-semibold mb-6">All Scholarships</h1>
+      <h1 className="text-2xl font-semibold mb-6">
+        All Scholarships
+      </h1>
 
       {/* Filters & Sort */}
       <div className="flex flex-wrap gap-4 mb-6">
@@ -86,7 +107,7 @@ export default function AllScholarships() {
             setSearch(e.target.value);
             setPage(1);
           }}
-          className="px-4 py-2 border border-blue-100 rounded-lg w-full md:w-1/3 focus:outline-none focus:ring-2 ring-blue-300"
+          className={`${inputBase} w-full md:w-1/3 border ${borderColor} ${bgColor} ${ringColor}`}
         />
 
         <select
@@ -95,7 +116,7 @@ export default function AllScholarships() {
             setCategoryFilter(e.target.value);
             setPage(1);
           }}
-          className="px-3 py-2 border border-blue-100 rounded-lg focus:outline-none focus:ring-2 ring-blue-300"
+          className={`${inputBase} border ${borderColor} ${bgColor} ${ringColor}`}
         >
           <option value="">All Categories</option>
           {categories.map((c) => (
@@ -106,7 +127,7 @@ export default function AllScholarships() {
         <select
           value={subjectFilter}
           onChange={(e) => setSubjectFilter(e.target.value)}
-          className="px-3 py-2 border border-blue-100 rounded-lg focus:outline-none focus:ring-2 ring-blue-300"
+          className={`${inputBase} border ${borderColor} ${bgColor} ${ringColor}`}
         >
           <option value="">All Subjects</option>
           {subjectCategories.map((s) => (
@@ -120,7 +141,7 @@ export default function AllScholarships() {
             setLocationFilter(e.target.value);
             setPage(1);
           }}
-          className="px-3 py-2 border border-blue-100 rounded-lg focus:outline-none focus:ring-2 ring-blue-300"
+          className={`${inputBase} border ${borderColor} ${bgColor} ${ringColor}`}
         >
           <option value="">All Countries</option>
           {locations.map((l) => (
@@ -135,7 +156,7 @@ export default function AllScholarships() {
             setSortBy(s);
             setOrder(o);
           }}
-          className="px-3 py-2 border border-blue-100 rounded-lg focus:outline-none focus:ring-2 ring-blue-300"
+          className={`${inputBase} border ${borderColor} ${bgColor} ${ringColor}`}
         >
           <option value="date-desc">Newest</option>
           <option value="date-asc">Oldest</option>
@@ -151,8 +172,8 @@ export default function AllScholarships() {
             setLocationFilter("");
             setPage(1);
           }}
-          className={`btn text-xl text-red-500 rounded-full 
-          ${(locationFilter || subjectFilter || categoryFilter || search)
+          className={`btn text-xl text-red-500 rounded-full
+            ${(locationFilter || subjectFilter || categoryFilter || search)
               ? "block"
               : "hidden"}`}
         >
@@ -160,13 +181,14 @@ export default function AllScholarships() {
         </button>
       </div>
 
-      {/* Cards with on-scroll animation */}
-      {/* Cards / Loading / Not Found */}
+      {/* Cards */}
       {loading ? (
         <Loading />
       ) : scholarships.length === 0 ? (
-        <div className="col-span-full text-center py-16 text-gray-500">
-          <p className="text-lg font-semibold">No scholarships found</p>
+        <div className="text-center py-16 text-gray-500">
+          <p className="text-lg font-semibold">
+            No scholarships found
+          </p>
           <p className="text-sm mt-2">
             Try adjusting your search or filters
           </p>
@@ -180,9 +202,12 @@ export default function AllScholarships() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.05 }}
-              className="border border-blue-100 rounded-lg overflow-hidden shadow-sm focus:outline-none focus:ring-2 ring-blue-300"
+              className={`border rounded-lg overflow-hidden shadow-sm 
+                ${borderColor}
+                focus:outline-none focus:ring-2 ring-blue-300
+                ${theme === "dark" ? " bg-gray-900" : " bg-white"}`}
             >
-              <div className="h-36 flex items-center justify-center bg-gray-50">
+              <div className={`h-36 flex items-center justify-center ${theme==='dark'? "bg-gray-800":"bg-gray-40"}`}>
                 <img
                   src={s.universityImage}
                   alt={s.universityName}
@@ -191,8 +216,12 @@ export default function AllScholarships() {
               </div>
 
               <div className="p-4 text-center">
-                <h3 className="font-semibold text-lg">{s.scholarshipName}</h3>
-                <p className="text-lg text-gray-500">{s.universityName}</p>
+                <h3 className="font-semibold text-lg">
+                  {s.scholarshipName}
+                </h3>
+                <p className="text-lg text-gray-500 dark:text-gray-400">
+                  {s.universityName}
+                </p>
 
                 <div className="flex flex-col max-sm:flex-row xl:flex-row justify-between items-center py-3">
                   <p className="text-sm">
@@ -214,9 +243,6 @@ export default function AllScholarships() {
           ))}
         </div>
       )}
-
-
-      {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
 
       {/* Pagination */}
       <div className="flex justify-center gap-2 mt-8">
