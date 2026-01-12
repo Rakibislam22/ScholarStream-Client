@@ -1,9 +1,14 @@
 import React from "react";
 import { motion } from "framer-motion";
+
 import Hero from "../components/Hero";
+import Categories from "../components/Categories";
 import TopScholarships from "../components/TopScholarships";
+import Highlights from "../components/Highlights";
+import Statistics from "../components/Statistics";
 import Testimonials from "../components/Testimonials";
 import Contact from "../components/Contact";
+import CallToAction from "../components/CallToAction";
 
 // reusable animation
 const sectionVariant = {
@@ -18,12 +23,23 @@ const sectionVariant = {
 export default function Home() {
     return (
         <main className="min-h-screen text-gray-900">
-            {/* Hero (loads instantly, no scroll delay) */}
+            {/* 1. Hero (no animation delay) */}
             <Hero />
 
-            {/* Top Scholarships */}
+            {/* 2. Categories */}
             <motion.section
-                className="mt-10"
+                className="mt-16"
+                variants={sectionVariant}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+            >
+                <Categories />
+            </motion.section>
+
+            {/* 3. Top Scholarships */}
+            <motion.section
+                className="mt-20"
                 variants={sectionVariant}
                 initial="hidden"
                 whileInView="visible"
@@ -32,9 +48,31 @@ export default function Home() {
                 <TopScholarships />
             </motion.section>
 
-            {/* Testimonials */}
+            {/* 4. Highlights */}
             <motion.section
-                className="mt-16"
+                className="mt-20"
+                variants={sectionVariant}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+            >
+                <Highlights />
+            </motion.section>
+
+            {/* 5. Statistics */}
+            <motion.section
+                className="mt-20"
+                variants={sectionVariant}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+            >
+                <Statistics />
+            </motion.section>
+
+            {/* 6. Testimonials */}
+            <motion.section
+                className="mt-20"
                 variants={sectionVariant}
                 initial="hidden"
                 whileInView="visible"
@@ -43,15 +81,26 @@ export default function Home() {
                 <Testimonials />
             </motion.section>
 
-            {/* Contact */}
+            {/* 7. Contact / FAQ */}
             <motion.section
-                className="mt-16 mb-24"
+                className="mt-20"
                 variants={sectionVariant}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
             >
                 <Contact />
+            </motion.section>
+
+            {/* 8. Call To Action */}
+            <motion.section
+                className="mt-24 mb-28"
+                variants={sectionVariant}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+            >
+                <CallToAction />
             </motion.section>
         </main>
     );

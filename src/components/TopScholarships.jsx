@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, use } from "react";
 import { motion } from "framer-motion";
 import ScholarCard from "./ScholarCard";
 import useAxios from "../hooks/useAxios";
+import { AuthContext } from "../provider/AuthContext";
 
 const listVariants = {
     hidden: {},
@@ -19,13 +20,14 @@ const itemVariants = {
 
 export default function TopScholarships() {
     const axiosIn = useAxios();
+    const { theme } = use(AuthContext);
+
     const [scholarships, setScholarships] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadTopScholarships = async () => {
             try {
-                // change sort=recent if needed
                 const res = await axiosIn.get("/top-scholarships?sort=fee");
                 setScholarships(res.data || []);
             } catch (err) {
@@ -39,18 +41,45 @@ export default function TopScholarships() {
     }, [axiosIn]);
 
     if (loading) {
-        return <p className="py-10 text-center">Loading top scholarships...</p>;
+        return (
+            <p
+                className={`py-14 text-center text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"
+                    }`}
+            >
+                Loading top scholarships...
+            </p>
+        );
     }
 
     return (
-        <section id="top-scholarships" className="bg-transparent">
-            <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold">Top Scholarships</h2>
-                <a href="/scholarships" className="text-indigo-600">
-                    See all
+        <section
+            id="top-scholarships"
+            className={`rounded-2xl p-6 sm:p-8 ${theme === "dark"
+                    ? "bg-gray-900/60"
+                    : "bg-gray-50"
+                }`}
+        >
+            {/* Header */}
+            <div className="flex items-center justify-between mb-8">
+                <h2
+                    className={`text-2xl font-bold ${theme === "dark" ? "text-gray-100" : "text-gray-900"
+                        }`}
+                >
+                    Top Scholarships
+                </h2>
+
+                <a
+                    href="/scholarships"
+                    className={`text-sm font-medium transition ${theme === "dark"
+                            ? "text-indigo-400 hover:text-indigo-300"
+                            : "text-indigo-600 hover:text-indigo-700"
+                        }`}
+                >
+                    See all →
                 </a>
             </div>
 
+            {/* Cards */}
             <motion.div
                 variants={listVariants}
                 initial="hidden"
@@ -58,7 +87,11 @@ export default function TopScholarships() {
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
             >
                 {scholarships.map((s) => (
-                    <motion.div key={s._id} variants={itemVariants}>
+                    <motion.div
+                        key={s._id}
+                        variants={itemVariants}
+                        className="h-full"
+                    >
                         <ScholarCard
                             scholarship={{
                                 id: s._id,
