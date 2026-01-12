@@ -53,16 +53,39 @@ const ManageAppliedApplications = () => {
         },
     });
 
-    if (isLoading) return <Loading></Loading>
+    const getStatusBadgeClass = (status) => {
+        switch (status) {
+            case "pending":
+                return "badge-warning";
+            case "processing":
+                return "badge-info";
+            case "completed":
+                return "badge-success";
+            case "rejected":
+            case "cancelled":
+                return "badge-error";
+            default:
+                return "badge-outline";
+        }
+    };
+
+    if (isLoading) return <Loading />;
 
     return (
-        <div className="bg-base-200 p-4 rounded-lg">
-            <h2 className="text-2xl font-semibold mb-4">
-                Manage Applied Applications
-            </h2>
+        <div className="p-6 bg-base-200 rounded-2xl shadow-md">
+            {/* Header */}
+            <div className="mb-6">
+                <h2 className="text-2xl font-semibold">
+                    Manage Applied Applications
+                </h2>
+                <p className="text-sm opacity-60">
+                    Review, update status and provide feedback
+                </p>
+            </div>
 
-            <div className="overflow-x-auto">
-                <table className="table table-zebra">
+            {/* Table */}
+            <div className="overflow-x-auto rounded-xl border border-base-300">
+                <table className="table table-zebra table-lg w-full">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -72,72 +95,93 @@ const ManageAppliedApplications = () => {
                             <th>Feedback</th>
                             <th>Status</th>
                             <th>Payment</th>
-                            <th>Actions</th>
+                            <th className="text-center">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {applications.map((app, index) => (
-                            <tr key={app._id}>
+                            <tr
+                                key={app._id}
+                                className="hover:bg-base-300/40 transition"
+                            >
                                 <td>{index + 1}</td>
-                                <td>{app.userName}</td>
-                                <td>{app.userEmail}</td>
-                                <td>{app.universityName}</td>
-                                <td>{app.feedback || "—"}</td>
+
+                                <td className="font-medium">
+                                    {app.userName}
+                                </td>
+
+                                <td className="text-sm opacity-80">
+                                    {app.userEmail}
+                                </td>
+
+                                <td className="text-sm opacity-80">
+                                    {app.universityName}
+                                </td>
+
+                                <td className="text-sm opacity-70">
+                                    {app.feedback || "—"}
+                                </td>
+
                                 <td>
-                                    <span className="badge badge-outline">
+                                    <span className={`badge badge-md ${getStatusBadgeClass(
+                                        app.applicationStatus
+                                    )}`}>
                                         {app.applicationStatus}
                                     </span>
                                 </td>
+
                                 <td>
-                                    <span className="badge">
+                                    <span className={`${app.paymentStatus === 'paid' ? "text-green-600" : "text-red-400"} badge badge-md`}>
                                         {app.paymentStatus}
                                     </span>
                                 </td>
 
-                                <td className="flex flex-wrap gap-1">
-                                    {/* Details */}
-                                    <button
-                                        onClick={() => setDetailsApp(app)}
-                                        className="btn btn-xs btn-info"
-                                    >
-                                        Details
-                                    </button>
+                                <td>
+                                    <div className="flex flex-wrap justify-center gap-2">
+                                        {/* Details */}
+                                        <button
+                                            onClick={() => setDetailsApp(app)}
+                                            className="btn btn-xs btn-info btn-outline rounded-full"
+                                        >
+                                            Details
+                                        </button>
 
-                                    {/* Feedback */}
-                                    <button
-                                        onClick={() => setFeedbackApp(app)}
-                                        className="btn btn-xs btn-primary"
-                                    >
-                                        Feedback
-                                    </button>
+                                        {/* Feedback */}
+                                        <button
+                                            onClick={() => setFeedbackApp(app)}
+                                            className="btn btn-xs btn-primary btn-outline rounded-full"
+                                        >
+                                            Feedback
+                                        </button>
 
-                                    {/* Status Update */}
-                                    <select
-                                        className="select select-xs select-bordered"
-                                        value={app.applicationStatus}
-                                        onChange={(e) =>
-                                            updateStatus({
-                                                id: app._id,
-                                                status: e.target.value,
-                                            })
-                                        }
-                                    >
-                                        <option value="processing">
-                                            Processing
-                                        </option>
-                                        <option value="completed">
-                                            Completed
-                                        </option>
-                                    </select>
+                                        {/* Status Update */}
+                                        <select
+                                            className="select select-xs select-bordered"
+                                            value={app.applicationStatus}
+                                            onChange={(e) =>
+                                                updateStatus({
+                                                    id: app._id,
+                                                    status: e.target.value,
+                                                })
+                                            }
+                                        >
+                                            <option value="processing">
+                                                Processing
+                                            </option>
+                                            <option value="completed">
+                                                Completed
+                                            </option>
+                                        </select>
 
-                                    {/* Reject */}
-                                    <button
-                                        onClick={() => rejectApp(app._id)}
-                                        className="btn btn-xs btn-error"
-                                    >
-                                        Cancel
-                                    </button>
+                                        {/* Reject */}
+                                        <button
+                                            onClick={() => rejectApp(app._id)}
+                                            className="btn btn-xs btn-error btn-outline rounded-full"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -148,20 +192,23 @@ const ManageAppliedApplications = () => {
             {/* 🔍 Details Modal */}
             {detailsApp && (
                 <dialog open className="modal">
-                    <div className="modal-box">
-                        <h3 className="font-semibold text-lg mb-2">
+                    <div className="modal-box max-w-md">
+                        <h3 className="font-semibold text-lg mb-4">
                             Application Details
                         </h3>
-                        <p><b>Name:</b> {detailsApp.userName}</p>
-                        <p><b>Email:</b> {detailsApp.userEmail}</p>
-                        <p><b>University:</b> {detailsApp.universityName}</p>
-                        <p><b>Category:</b> {detailsApp.scholarshipCategory}</p>
-                        <p><b>Degree:</b> {detailsApp.degree}</p>
-                        <p><b>Fees:</b> ${detailsApp.applicationFees}</p>
+
+                        <div className="space-y-1 text-sm">
+                            <p><b>Name:</b> {detailsApp.userName}</p>
+                            <p><b>Email:</b> {detailsApp.userEmail}</p>
+                            <p><b>University:</b> {detailsApp.universityName}</p>
+                            <p><b>Category:</b> {detailsApp.scholarshipCategory}</p>
+                            <p><b>Degree:</b> {detailsApp.degree}</p>
+                            <p><b>Fees:</b> ${detailsApp.applicationFees}</p>
+                        </div>
 
                         <div className="modal-action">
                             <button
-                                className="btn"
+                                className="btn btn-sm"
                                 onClick={() => setDetailsApp(null)}
                             >
                                 Close
@@ -174,7 +221,7 @@ const ManageAppliedApplications = () => {
             {/* 💬 Feedback Modal */}
             {feedbackApp && (
                 <dialog open className="modal">
-                    <div className="modal-box">
+                    <div className="modal-box max-w-md">
                         <h3 className="font-semibold text-lg mb-3">
                             Write Feedback
                         </h3>
@@ -182,6 +229,7 @@ const ManageAppliedApplications = () => {
                         <textarea
                             className="textarea textarea-bordered w-full"
                             rows="3"
+                            placeholder="Write your feedback..."
                             value={feedback}
                             onChange={(e) => setFeedback(e.target.value)}
                         />
@@ -194,12 +242,12 @@ const ManageAppliedApplications = () => {
                                         feedback,
                                     })
                                 }
-                                className="btn btn-primary"
+                                className="btn btn-sm btn-primary"
                             >
                                 Submit
                             </button>
                             <button
-                                className="btn"
+                                className="btn btn-sm btn-ghost"
                                 onClick={() => setFeedbackApp(null)}
                             >
                                 Cancel

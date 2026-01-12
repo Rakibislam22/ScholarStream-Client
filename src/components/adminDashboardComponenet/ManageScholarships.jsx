@@ -50,48 +50,88 @@ const ManageScholarships = () => {
     if (isLoading) return <p className="text-center mt-10">Loading...</p>;
 
     return (
-        <div className="p-4 bg-base-200 rounded-lg">
-            <h2 className="text-2xl font-semibold mb-4">Manage Scholarships</h2>
+        <div className="p-6 bg-base-200 rounded-2xl shadow-md">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+                <div>
+                    <h2 className="text-2xl font-semibold">
+                        Manage Scholarships
+                    </h2>
+                    <p className="text-sm opacity-60">
+                        View, update and remove scholarships
+                    </p>
+                </div>
+            </div>
 
-            <div className="overflow-x-auto">
-                <table className="table table-zebra w-full">
+            {/* Table */}
+            <div className="overflow-x-auto rounded-xl border border-base-300">
+                <table className="table table-zebra table-lg w-full">
                     <thead>
-                        <tr>
+                        <tr className="text-base">
                             <th>#</th>
                             <th>Scholarship</th>
                             <th>University</th>
                             <th>Country</th>
                             <th>Degree</th>
                             <th>Deadline</th>
-                            <th>Actions</th>
+                            <th className="text-center">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {scholarships.map((sc, index) => (
-                            <tr key={sc._id}>
+                            <tr
+                                key={sc._id}
+                                className="hover:bg-base-300/40 transition"
+                            >
                                 <td>{index + 1}</td>
-                                <td>{sc.scholarshipName}</td>
-                                <td>{sc.universityName}</td>
-                                <td>{sc.universityCountry}</td>
-                                <td>{sc.degree}</td>
-                                <td>{sc.applicationDeadline}</td>
-                                <td className="flex gap-2">
-                                    {/* Update */}
-                                    <Link
-                                        to={`/dashboard/update-scholarship/${sc._id}`}
-                                        className="btn btn-xs btn-info"
-                                    >
-                                        Update
-                                    </Link>
 
-                                    {/* Delete */}
-                                    <button
-                                        onClick={() => handleDelete(sc._id)}
-                                        className="btn btn-xs btn-error"
-                                    >
-                                        Delete
-                                    </button>
+                                {/* Scholarship */}
+                                <td>
+                                    <div className="font-semibold">
+                                        {sc.scholarshipName}
+                                    </div>
+                                </td>
+
+                                {/* University */}
+                                <td className="text-sm opacity-80">
+                                    {sc.universityName}
+                                </td>
+
+                                {/* Country */}
+                                <td>
+                                    <span className="badge badge-outline badge-sm">
+                                        {sc.universityCountry}
+                                    </span>
+                                </td>
+
+                                {/* Degree */}
+                                <td className="text-sm">
+                                    {sc.degree}
+                                </td>
+
+                                {/* Deadline */}
+                                <td className="text-sm opacity-70">
+                                    {sc.applicationDeadline}
+                                </td>
+
+                                {/* Actions */}
+                                <td>
+                                    <div className="flex items-center justify-center gap-2">
+                                        <Link
+                                            to={`/dashboard/update-scholarship/${sc._id}`}
+                                            className="btn btn-xs btn-info btn-outline rounded-full"
+                                        >
+                                            Update
+                                        </Link>
+
+                                        <button
+                                            onClick={() => handleDelete(sc._id)}
+                                            className="btn btn-xs btn-error btn-outline rounded-full"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -99,7 +139,9 @@ const ManageScholarships = () => {
                 </table>
 
                 {scholarships.length === 0 && (
-                    <p className="text-center py-6">No scholarships found</p>
+                    <div className="text-center py-12 text-base-content/60">
+                        No scholarships found
+                    </div>
                 )}
             </div>
         </div>

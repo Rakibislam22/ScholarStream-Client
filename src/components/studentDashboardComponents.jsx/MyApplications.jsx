@@ -97,14 +97,39 @@ const MyApplications = () => {
         }
     };
 
-    if (isLoading) return <Loading></Loading>;
+    const getStatusBadgeClass = (status) => {
+        switch (status) {
+            case "pending":
+                return "badge-warning";
+            case "processing":
+                return "badge-info";
+            case "completed":
+                return "badge-success";
+            case "rejected":
+            case "cancelled":
+                return "badge-error";
+            default:
+                return "badge-outline";
+        }
+    };
+
+    if (isLoading) return <Loading />;
 
     return (
-        <div className="bg-base-200 p-4 rounded-lg">
-            <h2 className="text-2xl font-semibold mb-4">My Applications</h2>
+        <div className="p-6 bg-base-200 rounded-2xl shadow-md">
+            {/* Header */}
+            <div className="mb-6">
+                <h2 className="text-2xl font-semibold">
+                    My Applications
+                </h2>
+                <p className="text-sm opacity-60">
+                    Track your applications, payments and reviews
+                </p>
+            </div>
 
-            <div className="overflow-x-auto">
-                <table className="table table-zebra">
+            {/* Table */}
+            <div className="overflow-x-auto rounded-xl border border-base-300">
+                <table className="table table-zebra table-lg w-full">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -114,70 +139,94 @@ const MyApplications = () => {
                             <th>Fees</th>
                             <th>Status</th>
                             <th>Feedback</th>
-                            <th>Actions</th>
+                            <th className="text-center">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {applications.map((app, index) => (
-                            <tr key={app._id}>
+                            <tr
+                                key={app._id}
+                                className="hover:bg-base-300/40 transition"
+                            >
                                 <td>{index + 1}</td>
-                                <td>{app.universityName}</td>
-                                <td>{app.universityCountry}</td>
-                                <td>{app.degree}</td>
-                                <td>${app.applicationFees}</td>
+
+                                <td className="font-medium">
+                                    {app.universityName}
+                                </td>
+
+                                <td className="text-sm opacity-80">
+                                    {app.universityCountry}
+                                </td>
+
+                                <td className="text-sm">
+                                    {app.degree}
+                                </td>
+
+                                <td className="text-sm font-medium">
+                                    ${app.applicationFees}
+                                </td>
 
                                 <td>
-                                    <span className="badge badge-outline">
+                                    <span className={`badge badge-sm ${getStatusBadgeClass(
+                                        app.applicationStatus
+                                    )}`}>
                                         {app.applicationStatus}
                                     </span>
                                 </td>
 
-                                <td>{app.feedback || "—"}</td>
+                                <td className="text-sm opacity-70">
+                                    {app.feedback || "—"}
+                                </td>
 
-                                <td className="flex flex-wrap gap-1">
-                                    {/* Details */}
-                                    <button
-                                        className="btn btn-xs btn-info"
-                                        onClick={() => setSelectedApp(app)}
-                                    >
-                                        Details
-                                    </button>
-
-                                    {/* Edit */}
-                                    {app.applicationStatus === "pending" && (
-                                        <button className="btn btn-xs">
-                                            Edit
+                                <td>
+                                    <div className="flex flex-wrap justify-center gap-2">
+                                        {/* Details */}
+                                        <button
+                                            className="btn btn-xs btn-info btn-outline rounded-full"
+                                            onClick={() => setSelectedApp(app)}
+                                        >
+                                            Details
                                         </button>
-                                    )}
 
-                                    {/* Pay */}
-                                    {app.applicationStatus === "pending" &&
-                                        app.paymentStatus === "unpaid" && (
-                                            <button onClick={() => handlePay(app)} className="btn btn-xs btn-warning">
-                                                Pay
+                                        {/* Edit */}
+                                        {app.applicationStatus === "pending" && (
+                                            <button className="btn btn-xs btn-outline rounded-full">
+                                                Edit
                                             </button>
                                         )}
 
-                                    {/* Delete */}
-                                    {app.applicationStatus === "pending" && (
-                                        <button
-                                            onClick={() => handleDelete(app._id)}
-                                            className="btn btn-xs btn-error"
-                                        >
-                                            Delete
-                                        </button>
-                                    )}
+                                        {/* Pay */}
+                                        {app.applicationStatus === "pending" &&
+                                            app.paymentStatus === "unpaid" && (
+                                                <button
+                                                    onClick={() => handlePay(app)}
+                                                    className="btn btn-xs btn-warning btn-outline rounded-full"
+                                                >
+                                                    Pay
+                                                </button>
+                                            )}
 
-                                    {/* Add Review */}
-                                    {app.applicationStatus === "completed" && (
-                                        <button
-                                            onClick={() => setReviewApp(app)}
-                                            className="btn btn-xs btn-success"
-                                        >
-                                            Add Review
-                                        </button>
-                                    )}
+                                        {/* Delete */}
+                                        {app.applicationStatus === "pending" && (
+                                            <button
+                                                onClick={() => handleDelete(app._id)}
+                                                className="btn btn-xs btn-error btn-outline rounded-full"
+                                            >
+                                                Delete
+                                            </button>
+                                        )}
+
+                                        {/* Add Review */}
+                                        {app.applicationStatus === "completed" && (
+                                            <button
+                                                onClick={() => setReviewApp(app)}
+                                                className="btn btn-xs btn-success btn-outline rounded-full"
+                                            >
+                                                Add Review
+                                            </button>
+                                        )}
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -185,29 +234,31 @@ const MyApplications = () => {
                 </table>
 
                 {applications.length === 0 && (
-                    <p className="text-center py-6">
+                    <div className="text-center py-12 text-base-content/60">
                         You haven’t applied for any scholarships yet.
-                    </p>
+                    </div>
                 )}
             </div>
 
             {/* 🔍 Details Modal */}
             {selectedApp && (
                 <dialog open className="modal">
-                    <div className="modal-box">
-                        <h3 className="font-semibold text-lg mb-2">
+                    <div className="modal-box max-w-md">
+                        <h3 className="font-semibold text-lg mb-4">
                             Application Details
                         </h3>
 
-                        <p><b>University:</b> {selectedApp.universityName}</p>
-                        <p><b>Degree:</b> {selectedApp.degree}</p>
-                        <p><b>Status:</b> {selectedApp.applicationStatus}</p>
-                        <p><b>Payment:</b> {selectedApp.paymentStatus}</p>
-                        <p><b>Feedback:</b> {selectedApp.feedback || "N/A"}</p>
+                        <div className="space-y-1 text-sm">
+                            <p><b>University:</b> {selectedApp.universityName}</p>
+                            <p><b>Degree:</b> {selectedApp.degree}</p>
+                            <p><b>Status:</b> {selectedApp.applicationStatus}</p>
+                            <p><b>Payment:</b> {selectedApp.paymentStatus}</p>
+                            <p><b>Feedback:</b> {selectedApp.feedback || "N/A"}</p>
+                        </div>
 
                         <div className="modal-action">
                             <button
-                                className="btn"
+                                className="btn btn-sm"
                                 onClick={() => setSelectedApp(null)}
                             >
                                 Close
@@ -220,7 +271,7 @@ const MyApplications = () => {
             {/* ⭐ Review Modal */}
             {reviewApp && (
                 <dialog open className="modal">
-                    <div className="modal-box">
+                    <div className="modal-box max-w-md">
                         <h3 className="font-semibold text-lg mb-4">
                             Add Review
                         </h3>
@@ -240,6 +291,7 @@ const MyApplications = () => {
                         <textarea
                             className="textarea textarea-bordered w-full"
                             rows="3"
+                            placeholder="Write your review..."
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                         />
@@ -247,12 +299,12 @@ const MyApplications = () => {
                         <div className="modal-action">
                             <button
                                 onClick={handleReviewSubmit}
-                                className="btn btn-primary"
+                                className="btn btn-sm btn-primary"
                             >
                                 Submit
                             </button>
                             <button
-                                className="btn"
+                                className="btn btn-sm btn-ghost"
                                 onClick={() => setReviewApp(null)}
                             >
                                 Cancel

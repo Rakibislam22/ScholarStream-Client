@@ -27,15 +27,15 @@ export default function Testimonials() {
         <section
             aria-labelledby="testimonials-title"
             className={`
-                rounded-2xl p-6 sm:p-8
+                rounded-2xl
                 ${theme === "dark"
-                    ? "bg-gray-900/70 text-gray-200"
+                    ? " text-gray-200"
                     : "bg-white text-gray-900"}
             `}
         >
             <h3
                 id="testimonials-title"
-                className="text-xl font-bold mb-6"
+                className="text-2xl font-bold mb-6"
             >
                 Success Stories
             </h3>

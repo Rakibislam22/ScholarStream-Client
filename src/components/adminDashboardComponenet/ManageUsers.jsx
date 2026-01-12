@@ -62,21 +62,37 @@ const ManageUsers = () => {
         });
     };
 
+    const getRoleBadgeClass = (role) => {
+        switch (role) {
+            case "Admin":
+                return "badge-error";
+            case "Moderator":
+                return "badge-info";
+            case "Student":
+                return "badge-success";
+            default:
+                return "badge-outline";
+        }
+    };
+
     const filteredUsers =
         roleFilter === "All"
             ? users
             : users.filter((u) => u.role === roleFilter);
 
-    if (isLoading) return <Loading></Loading>;
+    if (isLoading) return <Loading />;
 
     return (
-        <div className="p-4 bg-base-200 rounded-lg">
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-semibold">Manage Users</h2>
+        <div className="p-5 bg-base-200 rounded-xl shadow">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-5">
+                <h2 className="text-2xl font-semibold">
+                    Manage Users
+                </h2>
 
                 {/* Filter */}
                 <select
-                    className="select select-bordered"
+                    className="select select-sm select-bordered max-w-xs"
                     value={roleFilter}
                     onChange={(e) => setRoleFilter(e.target.value)}
                 >
@@ -87,15 +103,16 @@ const ManageUsers = () => {
                 </select>
             </div>
 
+            {/* Table */}
             <div className="overflow-x-auto">
-                <table className="table table-zebra w-full">
+                <table className="table table-zebra table-lg">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
-                            <th>Actions</th>
+                            <th className="text-center">Actions</th>
                         </tr>
                     </thead>
 
@@ -103,37 +120,43 @@ const ManageUsers = () => {
                         {filteredUsers.map((user, index) => (
                             <tr key={user._id}>
                                 <td>{index + 1}</td>
-                                <td>{user.name || "N/A"}</td>
+                                <td className="font-medium">
+                                    {user.name || "N/A"}
+                                </td>
                                 <td>{user.email}</td>
+
                                 <td>
-                                    <span className="badge badge-outline">
+                                    <span className={`badge badge-md ${getRoleBadgeClass(user.role)}`}>
                                         {user.role}
                                     </span>
                                 </td>
-                                <td className="flex gap-2">
-                                    {/* Role change */}
-                                    <select
-                                        className="select select-xs select-bordered"
-                                        value={user.role}
-                                        onChange={(e) =>
-                                            handleRoleChange(
-                                                user._id,
-                                                e.target.value
-                                            )
-                                        }
-                                    >
-                                        <option>Student</option>
-                                        <option>Moderator</option>
-                                        <option>Admin</option>
-                                    </select>
 
-                                    {/* Delete */}
-                                    <button
-                                        onClick={() => handleDelete(user._id)}
-                                        className="btn btn-xs btn-error"
-                                    >
-                                        Delete
-                                    </button>
+                                <td>
+                                    <div className="flex flex-wrap items-center justify-center gap-2">
+                                        {/* Role change */}
+                                        <select
+                                            className="select select-xs select-bordered"
+                                            value={user.role}
+                                            onChange={(e) =>
+                                                handleRoleChange(
+                                                    user._id,
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option>Student</option>
+                                            <option>Moderator</option>
+                                            <option>Admin</option>
+                                        </select>
+
+                                        {/* Delete */}
+                                        <button
+                                            onClick={() => handleDelete(user._id)}
+                                            className="btn btn-xs btn-error btn-outline"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -141,7 +164,9 @@ const ManageUsers = () => {
                 </table>
 
                 {filteredUsers.length === 0 && (
-                    <p className="text-center py-6">No users found</p>
+                    <div className="text-center py-8 text-base-content/60">
+                        No users found
+                    </div>
                 )}
             </div>
         </div>

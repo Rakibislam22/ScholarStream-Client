@@ -54,10 +54,7 @@ export default function TopScholarships() {
     return (
         <section
             id="top-scholarships"
-            className={`rounded-2xl p-6 sm:p-8 ${theme === "dark"
-                    ? "bg-gray-900/60"
-                    : "bg-gray-50"
-                }`}
+            className={`rounded-2xl `}
         >
             {/* Header */}
             <div className="flex items-center justify-between mb-8">

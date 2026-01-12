@@ -57,10 +57,10 @@ export default function ScholarCard({ scholarship }) {
                         inline-flex items-center justify-center
                         px-4 py-2 rounded-full text-sm font-medium
                         transition-all
+                        text-white
                         ${theme === "dark"
-                            ? "bg-indigo-500 hover:bg-indigo-600 text-white"
-                            : "bg-indigo-600 hover:bg-indigo-700 text-white"
-                        }
+                            ? "bg-indigo-500 hover:bg-indigo-600"
+                            : "bg-[#0303b8] hover:bg-[#000064]"}
                     `}
                 >
                     View Details

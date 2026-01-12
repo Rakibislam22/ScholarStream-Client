@@ -27,6 +27,8 @@ import ManageAppliedApplications from "../components/modaretorDashboardComponent
 import AllReviews from "../components/modaretorDashboardComponent.jsx/AllReviews";
 import Forbidden from "../pages/Forbidden";
 import ErrorPage from "../pages/ErrorPage";
+import Privacy from "../pages/Privacy";
+import Terms from "../pages/Terms";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +73,14 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />
+      },
+      {
+        path: "/privacy",
+        element: <Privacy></Privacy>
+      },
+      {
+        path:"/terms",
+        element:<Terms></Terms>
       }
     ],
   },

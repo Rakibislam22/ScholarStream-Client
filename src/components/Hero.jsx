@@ -83,7 +83,7 @@ export default function Hero() {
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => navigate("/scholarships")}
-                                        className={`rounded-md px-6 py-3 font-semibold shadow-lg transition
+                                        className={`rounded-3xl px-6 py-3 font-semibold shadow-lg transition
                     ${theme === "dark"
                                                 ? "bg-indigo-500 hover:bg-indigo-600 text-white"
                                                 : "bg-white text-indigo-700"
@@ -94,7 +94,7 @@ export default function Hero() {
 
                                     <a
                                         href="#top-scholarships"
-                                        className={`rounded-md px-6 py-3 font-medium transition backdrop-blur
+                                        className={`rounded-3xl px-6 py-3 font-medium transition backdrop-blur
                     ${theme === "dark"
                                                 ? "bg-white/10 hover:bg-white/20"
                                                 : "bg-white/20 hover:bg-white/30"

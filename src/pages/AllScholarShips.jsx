@@ -194,7 +194,7 @@ export default function AllScholarships() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
           {scholarships.map((s, i) => (
             <motion.div
               key={s._id}
@@ -247,7 +247,7 @@ export default function AllScholarships() {
       )}
 
       {/* Pagination */}
-      <div className="flex justify-center gap-2 mt-8">
+      <div className="flex justify-center gap-2 mt-8 my-10">
         {[...Array(totalPages).keys()].map((n) => (
           <button
             key={n}

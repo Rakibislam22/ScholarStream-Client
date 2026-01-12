@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
+import Swal from "sweetalert2";
 
 const AllReviews = () => {
     const axiosIn = useAxios();
@@ -20,23 +21,58 @@ const AllReviews = () => {
     const { mutate: deleteReview } = useMutation({
         mutationFn: (id) => axiosIn.delete(`/reviews/${id}`),
         onSuccess: () => {
-            toast.success("Review deleted");
             queryClient.invalidateQueries(["all-reviews"]);
         },
     });
 
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteReview(id);
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Review has been deleted.",
+                    icon: "success"
+                });
+            }
+        });
+    };
+
     if (isLoading) {
-        return <Loading></Loading>
+        return <Loading />;
     }
 
-    return (
-        <div className="bg-base-200 p-4 rounded-lg">
-            <h2 className="text-2xl font-semibold mb-4">
-                All Reviews (Moderation)
-            </h2>
+    const getRatingBadgeClass = (rating) => {
+        if (rating <= 2) return "badge-error";
+        if (rating == 3) return "badge-warning";
+        if (rating == 4) return "badge-info";
+        if (rating == 5) return "badge-success";
+        return "badge-outline";
+    };
 
-            <div className="overflow-x-auto">
-                <table className="table table-zebra w-full">
+    return (
+        <div className="p-6 bg-base-200 rounded-2xl shadow-md">
+            {/* Header */}
+            <div className="mb-6">
+                <h2 className="text-2xl font-semibold">
+                    All Reviews
+                </h2>
+                <p className="text-sm opacity-60">
+                    Moderate and manage student reviews
+                </p>
+            </div>
+
+            {/* Table */}
+            <div className="overflow-x-auto rounded-xl border border-base-300">
+                <table className="table table-zebra table-lg w-full">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -46,41 +82,62 @@ const AllReviews = () => {
                             <th>Rating</th>
                             <th>Comment</th>
                             <th>Date</th>
-                            <th>Action</th>
+                            <th className="text-center">Action</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {reviews.map((review, index) => (
-                            <tr key={review._id}>
+                            <tr
+                                key={review._id}
+                                className="hover:bg-base-300/40 transition"
+                            >
                                 <td>{index + 1}</td>
-                                <td>{review.userName}</td>
-                                <td>{review.scholarshipName || "N/A"}</td>
-                                <td>{review.universityName || "N/A"}</td>
+
+                                {/* Student */}
+                                <td className="font-medium">
+                                    {review.userName}
+                                </td>
+
+                                {/* Scholarship */}
+                                <td className="text-sm opacity-80">
+                                    {review.scholarshipName || "N/A"}
+                                </td>
+
+                                {/* University */}
+                                <td className="text-sm opacity-80">
+                                    {review.universityName || "N/A"}
+                                </td>
+
+                                {/* Rating */}
                                 <td>
-                                    <span className="badge badge-outline">
+                                    <span className={`badge badge-sm ${getRatingBadgeClass(
+                                        review.ratingPoint
+                                    )}`}>
                                         {review.ratingPoint}/5
                                     </span>
                                 </td>
-                                <td className="max-w-xs truncate">
+
+                                {/* Comment */}
+                                <td className="max-w-xs truncate text-sm opacity-80">
                                     {review.reviewComment}
                                 </td>
-                                <td>{review.reviewDate}</td>
+
+                                {/* Date */}
+                                <td className="text-sm opacity-70">
+                                    {review.reviewDate}
+                                </td>
+
+                                {/* Action */}
                                 <td>
-                                    <button
-                                        onClick={() => {
-                                            if (
-                                                confirm(
-                                                    "Are you sure you want to delete this review?"
-                                                )
-                                            ) {
-                                                deleteReview(review._id);
-                                            }
-                                        }}
-                                        className="btn btn-xs btn-error"
-                                    >
-                                        Delete
-                                    </button>
+                                    <div className="flex justify-center">
+                                        <button
+                                            onClick={() => handleDelete(review._id) }
+                                            className="btn btn-xs btn-error btn-outline rounded-full"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -88,9 +145,9 @@ const AllReviews = () => {
                 </table>
 
                 {reviews.length === 0 && (
-                    <p className="text-center py-6">
+                    <div className="text-center py-12 text-base-content/60">
                         No reviews found.
-                    </p>
+                    </div>
                 )}
             </div>
         </div>

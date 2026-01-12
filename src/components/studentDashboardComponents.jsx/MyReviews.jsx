@@ -4,6 +4,7 @@ import { AuthContext } from "../../provider/AuthContext";
 import useAxios from "../../hooks/useAxios";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
+import Swal from "sweetalert2";
 
 const MyReviews = () => {
     const { user } = useContext(AuthContext);
@@ -14,25 +15,18 @@ const MyReviews = () => {
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState("");
 
-    // Fetch my reviews
     const { data: reviews = [], isLoading } = useQuery({
         queryKey: ["my-reviews", user?.email],
         enabled: !!user?.email,
         queryFn: async () => {
-            const res = await axiosIn.get(
-                `/my-reviews?email=${user.email}`
-            );
+            const res = await axiosIn.get(`/my-reviews?email=${user.email}`);
             return res.data;
         },
     });
 
-    // Update review
     const { mutate: updateReview } = useMutation({
         mutationFn: ({ id, ratingPoint, reviewComment }) =>
-            axiosIn.patch(`/reviews/${id}`, {
-                ratingPoint,
-                reviewComment,
-            }),
+            axiosIn.patch(`/reviews/${id}`, { ratingPoint, reviewComment }),
         onSuccess: () => {
             toast.success("Review updated");
             queryClient.invalidateQueries(["my-reviews"]);
@@ -40,14 +34,33 @@ const MyReviews = () => {
         },
     });
 
-    // Delete review
     const { mutate: deleteReview } = useMutation({
         mutationFn: (id) => axiosIn.delete(`/reviews/${id}`),
         onSuccess: () => {
-            toast.success("Review deleted");
             queryClient.invalidateQueries(["my-reviews"]);
         },
     });
+
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteReview(id);
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Review has been deleted.",
+                    icon: "success"
+                });
+            }
+        });
+    };
 
     const handleEditOpen = (review) => {
         setEditReview(review);
@@ -55,14 +68,29 @@ const MyReviews = () => {
         setComment(review.reviewComment);
     };
 
-    if (isLoading) return <Loading></Loading>;
+    if (isLoading) return <Loading />;
+
+    const getRatingBadgeClass = (rating) => {
+        if (rating <= 2) return "badge-error";
+        if (rating == 3) return "badge-warning";
+        if (rating == 4) return "badge-info";
+        if (rating == 5) return "badge-success";
+        return "badge-outline";
+    };
 
     return (
-        <div className="bg-base-200 p-4 rounded-lg">
-            <h2 className="text-2xl font-semibold mb-4">My Reviews</h2>
+        <div className="p-6 bg-base-200 rounded-2xl shadow-md">
+            {/* Header */}
+            <div className="mb-6">
+                <h2 className="text-2xl font-semibold">My Reviews</h2>
+                <p className="text-sm opacity-60">
+                    Manage and update your submitted reviews
+                </p>
+            </div>
 
-            <div className="overflow-x-auto">
-                <table className="table table-zebra">
+            {/* Table */}
+            <div className="overflow-x-auto rounded-xl border border-base-300">
+                <table className="table table-zebra table-lg w-full">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -71,33 +99,58 @@ const MyReviews = () => {
                             <th>Comment</th>
                             <th>Rating</th>
                             <th>Date</th>
-                            <th>Actions</th>
+                            <th className="text-center">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {reviews.map((review, index) => (
-                            <tr key={review._id}>
+                            <tr
+                                key={review._id}
+                                className="hover:bg-base-300/40 transition"
+                            >
                                 <td>{index + 1}</td>
-                                <td>{review.scholarshipName || "N/A"}</td>
-                                <td>{review.universityName || "N/A"}</td>
-                                <td>{review.reviewComment}</td>
-                                <td>{review.ratingPoint}/5</td>
-                                <td>{review.reviewDate}</td>
-                                <td className="flex gap-2">
-                                    <button
-                                        onClick={() => handleEditOpen(review)}
-                                        className="btn btn-xs btn-info"
-                                    >
-                                        Edit
-                                    </button>
 
-                                    <button
-                                        onClick={() => deleteReview(review._id)}
-                                        className="btn btn-xs btn-error"
-                                    >
-                                        Delete
-                                    </button>
+                                <td className="font-medium">
+                                    {review.scholarshipName || "N/A"}
+                                </td>
+
+                                <td className="text-sm opacity-80">
+                                    {review.universityName || "N/A"}
+                                </td>
+
+                                <td className="max-w-xs truncate text-sm">
+                                    {review.reviewComment}
+                                </td>
+
+                                <td>
+                                    <span className={`badge badge-sm ${getRatingBadgeClass(
+                                        review.ratingPoint
+                                    )}`}>
+                                        {review.ratingPoint}/5
+                                    </span>
+                                </td>
+
+                                <td className="text-sm opacity-70">
+                                    {review.reviewDate}
+                                </td>
+
+                                <td>
+                                    <div className="flex justify-center gap-2">
+                                        <button
+                                            onClick={() => handleEditOpen(review)}
+                                            className="btn btn-xs btn-info btn-outline rounded-full"
+                                        >
+                                            Edit
+                                        </button>
+
+                                        <button
+                                            onClick={() => handleDelete(review._id)}
+                                            className="btn btn-xs btn-error btn-outline rounded-full"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -105,16 +158,16 @@ const MyReviews = () => {
                 </table>
 
                 {reviews.length === 0 && (
-                    <p className="text-center py-6">
+                    <div className="text-center py-12 text-base-content/60">
                         You haven’t written any reviews yet.
-                    </p>
+                    </div>
                 )}
             </div>
 
             {/* ✏️ Edit Modal */}
             {editReview && (
                 <dialog open className="modal">
-                    <div className="modal-box">
+                    <div className="modal-box max-w-md">
                         <h3 className="font-semibold text-lg mb-4">
                             Edit Review
                         </h3>
@@ -134,6 +187,7 @@ const MyReviews = () => {
                         <textarea
                             className="textarea textarea-bordered w-full"
                             rows="3"
+                            placeholder="Update your review..."
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                         />
@@ -147,13 +201,13 @@ const MyReviews = () => {
                                         reviewComment: comment,
                                     })
                                 }
-                                className="btn btn-primary"
+                                className="btn btn-sm btn-primary"
                             >
                                 Update
                             </button>
 
                             <button
-                                className="btn"
+                                className="btn btn-sm btn-ghost"
                                 onClick={() => setEditReview(null)}
                             >
                                 Cancel
