@@ -14,6 +14,7 @@ const Login = () => {
     const axiosIn = useAxios();
 
     const [eye, setEye] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const {
         register,
@@ -24,13 +25,18 @@ const Login = () => {
 
     const handleLogin = (data) => {
 
+        setLoading(true);
+
         userLogin(data.email, data.password).then(result => {
             setUser(result.user);
+            toast.success('Login successful!');
             navigate(`${location.state ? location.state : "/"}`)
         }).catch(error => {
             const errorMessage = error.message;
             toast.error(errorMessage);
 
+        }).finally(() => {
+            setLoading(false);
         });
     }
 
@@ -64,6 +70,7 @@ const Login = () => {
                     <input
                         type="email" {...register("email", { required: true })}
                         placeholder="Enter your email"
+                        defaultValue={"demo@gmail.com"}
                         className="w-full px-4 py-2 border border-gray-300 rounded-4xl focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                     {
@@ -76,6 +83,7 @@ const Login = () => {
                     <input
                         type={eye ? "text" : "password"} {...register("password", { required: true })}
                         placeholder="Enter your password"
+                        defaultValue={"@Demo1234"}
                         className="w-full px-4 py-2 border border-gray-300 rounded-4xl focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                     <span onClick={() => setEye(!eye)} className='absolute right-3 top-10 cursor-pointer z-10'>
@@ -99,11 +107,25 @@ const Login = () => {
 
                 <button
                     type="submit"
-                    className={`w-full btn ${theme === "dark"
-                        ? "bg-indigo-500 hover:bg-indigo-600"
-                        : ""} bg-[#0303b8] text-white py-2 rounded-4xl font-semibold hover:bg-[#000064] transition-colors `}
+                    disabled={loading}
+                    className={`
+                        w-full btn rounded-4xl font-semibold transition-colors
+                        ${loading ? "opacity-70 cursor-not-allowed" : ""}
+                        ${theme === "dark"
+                                            ? "bg-indigo-500 hover:bg-indigo-600"
+                                            : "bg-[#0303b8] hover:bg-[#000064]"
+                                        }
+                        text-white
+                    `}
                 >
-                    Login
+                    {loading ? (
+                        <span className="flex items-center justify-center gap-2">
+                            <span className="loading loading-spinner loading-sm"></span>
+                            Login...
+                        </span>
+                    ) : (
+                        "Login"
+                    )}
                 </button>
 
                 <button onClick={handleGoogle} type="button" className={`${theme === "dark"

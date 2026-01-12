@@ -9,7 +9,7 @@ import useAxios from '../hooks/useAxios';
 
 const Signup = () => {
 
-    const { createUser, setUser, google, forUpdateProfile , theme } = use(AuthContext);
+    const { createUser, setUser, google, forUpdateProfile, theme } = use(AuthContext);
     const axiosIn = useAxios();
     const {
         register,
@@ -19,14 +19,16 @@ const Signup = () => {
     const navigate = useNavigate();
 
     const [eye, setEye] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleSignup = (data) => {
 
-
+        setLoading(true);
         createUser(data.email, data.password)
             .then((result) => {
                 const newUser = result.user;
                 setUser(newUser);
+                toast.success('Register successful!');
 
                 const userToDatabase = { name: data.name, email: data.email, photoURL: data?.photoUrl, role: "Student" };
 
@@ -40,6 +42,9 @@ const Signup = () => {
             })
             .catch((error) => {
                 toast.error(error.message);
+            })
+            .finally(() => {
+                setLoading(false);
             });
     }
 
@@ -48,6 +53,7 @@ const Signup = () => {
             const newUser = result.user;
 
             setUser(newUser);
+            toast.success('Register successful!');
 
             const userToDatabase = { name: newUser.displayName, email: newUser.email, photoURL: newUser.photoUrl, role: "Student" };
 
@@ -63,7 +69,7 @@ const Signup = () => {
     return (
         <div className="flex justify-center items-center min-h-screen">
             <title>ScholarStream - Signup</title>
-            <div className=" rounded-2xl p-8 w-full max-w-md"> <h2 className={`text-3xl font-semibold text-center ${theme === 'dark' ? "text-indigo-500": "text-[#0303b8]"} mb-6`}>
+            <div className=" rounded-2xl p-8 w-full max-w-md"> <h2 className={`text-3xl font-semibold text-center ${theme === 'dark' ? "text-indigo-500" : "text-[#0303b8]"} mb-6`}>
                 Sign Up </h2>
 
                 <form onSubmit={handleSubmit(handleSignup)} className="space-y-5">
@@ -124,20 +130,34 @@ const Signup = () => {
 
                     <button
                         type="submit"
-                        className={`w-full btn ${theme === "dark"
-                            ? "bg-indigo-500 hover:bg-indigo-600"
-                            : ""} bg-[#0303b8] text-white py-2 rounded-4xl font-semibold hover:bg-[#000064] transition-colors`}
+                        disabled={loading}
+                        className={`
+                        w-full btn rounded-4xl font-semibold transition-colors
+                        ${loading ? "opacity-70 cursor-not-allowed" : ""}
+                        ${theme === "dark"
+                                ? "bg-indigo-500 hover:bg-indigo-600"
+                                : "bg-[#0303b8] hover:bg-[#000064]"
+                            }
+                            text-white
+                        `}
                     >
-                        Register
+                        {loading ? (
+                            <span className="flex items-center justify-center gap-2">
+                                <span className="loading loading-spinner loading-sm"></span>
+                                Registering...
+                            </span>
+                        ) : (
+                            "Register"
+                        )}
                     </button>
                     <button type="button" onClick={handleGoogle} className={` ${theme === "dark"
-                            ? "text-gray-200 hover:bg-indigo-500"
-                            : ""} w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-4xl hover:bg-[#0303b8] hover:text-white transition-colors`} > <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" /> <span className="font-medium">Continue with Google</span> </button>
+                        ? "text-gray-200 hover:bg-indigo-500"
+                        : ""} w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-4xl hover:bg-[#0303b8] hover:text-white transition-colors`} > <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" /> <span className="font-medium">Continue with Google</span> </button>
                 </form>
 
                 <p className="text-sm text-center text-gray-600 mt-6">
                     Already have an account?{" "}
-                    <Link to="/auth/login" className={`${theme === 'dark' ? "text-indigo-500": "text-[#0303b8]"}  hover:underline`}>
+                    <Link to="/auth/login" className={`${theme === 'dark' ? "text-indigo-500" : "text-[#0303b8]"}  hover:underline`}>
                         Login
                     </Link>
                 </p>

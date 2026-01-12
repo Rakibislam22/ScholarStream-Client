@@ -4,6 +4,7 @@ import useAxios from "../hooks/useAxios";
 import Loading from "../components/Loading";
 import { motion } from "framer-motion";
 import { AuthContext } from "../provider/AuthContext";
+import ServerError from "./ServerError";
 
 export default function AllScholarships() {
   const axiosIn = useAxios();
@@ -80,7 +81,7 @@ export default function AllScholarships() {
     [allScholarships]
   );
 
-  if (error) return <p className="text-red-600">{error}</p>;
+  if (error) return <ServerError></ServerError>;
 
   const inputBase =
     "px-4 py-2 rounded-lg focus:outline-none focus:ring-2";

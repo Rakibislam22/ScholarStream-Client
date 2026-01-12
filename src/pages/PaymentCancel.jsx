@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router";
 import { FaTimesCircle } from "react-icons/fa";
 import useAxios from "../hooks/useAxios";
+import Loading from "../components/Loading";
+import { AuthContext } from "../provider/AuthContext";
 
 const PaymentCancel = () => {
     const { applicationId } = useParams();
     const axiosIn = useAxios();
+    const { theme } = useContext(AuthContext);
 
     const [application, setApplication] = useState(null);
     const [errorMsg, setErrorMsg] = useState(
@@ -33,29 +36,57 @@ const PaymentCancel = () => {
         loadApplication();
     }, [applicationId, axiosIn]);
 
-    if (loading) {
-        return <p className="text-center mt-20">Loading...</p>;
-    }
+    if (loading) return <Loading />;
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-base-200">
-            <div className="bg-white p-8 rounded-lg shadow-md text-center max-w-md w-full">
-                <FaTimesCircle className="text-red-500 text-6xl mx-auto mb-4" />
+        <div
+            className={`min-h-screen flex items-center justify-center`}
+        >
+            <div
+                className={`p-8 rounded-xl shadow-md text-center max-w-md w-full
+                ${theme === "dark"
+                        ? "bg-gray-800 text-gray-200"
+                        : "bg-white text-gray-800"
+                    }
+            `}
+            >
+                <FaTimesCircle
+                    className={`text-6xl mx-auto mb-4
+                    ${theme === "dark" ? "text-red-400" : "text-red-500"}
+                `}
+                />
 
-                <h2 className="text-2xl font-semibold mb-2 text-red-600">
+                <h2
+                    className={`text-2xl font-semibold mb-2
+                    ${theme === "dark" ? "text-red-400" : "text-red-600"}
+                `}
+                >
                     Payment Failed
                 </h2>
 
                 {/* Scholarship Info */}
                 {application && (
-                    <p className="text-gray-700 mb-2">
-                        <b>Scholarship:</b>{" "}
-                        {application.scholarshipName}
+                    <p
+                        className={`mb-2 text-sm
+                        ${theme === "dark"
+                                ? "text-gray-300"
+                                : "text-gray-700"
+                            }
+                    `}
+                    >
+                        <b>Scholarship:</b> {application.scholarshipName}
                     </p>
                 )}
 
                 {/* Error Message */}
-                <p className="text-gray-600 mb-6">
+                <p
+                    className={`mb-6 text-sm
+                    ${theme === "dark"
+                            ? "text-gray-400"
+                            : "text-gray-600"
+                        }
+                `}
+                >
                     {errorMsg}
                 </p>
 
@@ -63,7 +94,7 @@ const PaymentCancel = () => {
                 <div className="flex justify-center">
                     <Link
                         to="/dashboard/my-applications"
-                        className="btn btn-primary w-full"
+                        className="btn btn-primary w-full rounded-full"
                     >
                         Return to Dashboard
                     </Link>
