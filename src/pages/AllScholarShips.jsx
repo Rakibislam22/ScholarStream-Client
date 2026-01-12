@@ -234,7 +234,9 @@ export default function AllScholarships() {
 
                 <button
                   onClick={() => navigate(`/scholarship/${s._id}`)}
-                  className="mt-3 w-full bg-[#0303b8] hover:bg-[#000064] text-white py-2 rounded-3xl"
+                  className={`mt-3 w-full ${theme === "dark"
+                            ? "bg-indigo-500 hover:bg-indigo-600"
+                            : ""} bg-[#0303b8] hover:bg-[#000064] text-white py-2 rounded-3xl`}
                 >
                   View Details
                 </button>

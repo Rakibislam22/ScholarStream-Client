@@ -8,7 +8,7 @@ import useAxios from '../hooks/useAxios';
 
 
 const Login = () => {
-    const { google, userLogin, setUser } = use(AuthContext);
+    const { google, userLogin, setUser, theme } = use(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
     const axiosIn = useAxios();
@@ -55,7 +55,7 @@ const Login = () => {
 
     return (<div className="flex justify-center items-center min-h-screen ">
         <title>ScholarStream - Login</title>
-        <div className=" rounded-2xl p-8 w-full max-w-md"> <h2 className="text-3xl font-semibold text-center text-[#0303b8] mb-6">
+        <div className=" rounded-2xl p-8 w-full max-w-md"> <h2 className={`text-3xl font-semibold text-center ${theme === 'dark' ? "text-indigo-500" : "text-[#0303b8]"} text-[#0303b8] mb-6`}>
             Login </h2>
 
             <form onSubmit={handleSubmit(handleLogin)} className="space-y-5">
@@ -91,7 +91,7 @@ const Login = () => {
 
                 <div className="text-right">
                     <a
-                        className="text-sm text-[#0303b8] hover:underline"
+                        className={`${theme === 'dark' ? "text-indigo-500" : "text-[#0303b8]"} text-sm hover:underline`}
                     >
                         Forgot Password?
                     </a>
@@ -99,17 +99,21 @@ const Login = () => {
 
                 <button
                     type="submit"
-                    className="w-full btn bg-[#0303b8] text-white py-2 rounded-4xl font-semibold hover:bg-[#000064] transition-colors "
+                    className={`w-full btn ${theme === "dark"
+                        ? "bg-indigo-500 hover:bg-indigo-600"
+                        : ""} bg-[#0303b8] text-white py-2 rounded-4xl font-semibold hover:bg-[#000064] transition-colors `}
                 >
                     Login
                 </button>
 
-                <button onClick={handleGoogle} type="button" className="w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-4xl hover:bg-[#0303b8] hover:text-white transition-colors" > <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" /> <span className="font-medium">Continue with Google</span> </button>
+                <button onClick={handleGoogle} type="button" className={`${theme === "dark"
+                    ? "text-gray-200 hover:bg-indigo-500"
+                    : ""} w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-4xl hover:bg-[#0303b8] hover:text-white transition-colors`} > <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" /> <span className="font-medium">Continue with Google</span> </button>
             </form>
 
             <p className="text-sm text-center text-gray-600 mt-6">
                 Don’t have an account?{" "}
-                <Link to="/auth/signup" className="text-[#0303b8] hover:underline">
+                <Link to="/auth/signup" className={`${theme === 'dark' ? "text-indigo-500" : "text-[#0303b8]"} hover:underline`}>
                     Sign Up
                 </Link>
             </p>

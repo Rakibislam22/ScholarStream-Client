@@ -9,7 +9,7 @@ import useAxios from '../hooks/useAxios';
 
 const Signup = () => {
 
-    const { createUser, setUser, google, forUpdateProfile } = use(AuthContext);
+    const { createUser, setUser, google, forUpdateProfile , theme } = use(AuthContext);
     const axiosIn = useAxios();
     const {
         register,
@@ -63,7 +63,7 @@ const Signup = () => {
     return (
         <div className="flex justify-center items-center min-h-screen">
             <title>ScholarStream - Signup</title>
-            <div className=" rounded-2xl p-8 w-full max-w-md"> <h2 className="text-3xl font-semibold text-center text-[#0303b8] mb-6">
+            <div className=" rounded-2xl p-8 w-full max-w-md"> <h2 className={`text-3xl font-semibold text-center ${theme === 'dark' ? "text-indigo-500": "text-[#0303b8]"} mb-6`}>
                 Sign Up </h2>
 
                 <form onSubmit={handleSubmit(handleSignup)} className="space-y-5">
@@ -124,16 +124,20 @@ const Signup = () => {
 
                     <button
                         type="submit"
-                        className="w-full btn bg-[#0303b8] text-white py-2 rounded-4xl font-semibold hover:bg-[#000064] transition-colors"
+                        className={`w-full btn ${theme === "dark"
+                            ? "bg-indigo-500 hover:bg-indigo-600"
+                            : ""} bg-[#0303b8] text-white py-2 rounded-4xl font-semibold hover:bg-[#000064] transition-colors`}
                     >
                         Register
                     </button>
-                    <button type="button" onClick={handleGoogle} className="w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-4xl hover:bg-[#0303b8] hover:text-white transition-colors" > <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" /> <span className="font-medium">Continue with Google</span> </button>
+                    <button type="button" onClick={handleGoogle} className={` ${theme === "dark"
+                            ? "text-gray-200 hover:bg-indigo-500"
+                            : ""} w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-4xl hover:bg-[#0303b8] hover:text-white transition-colors`} > <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" /> <span className="font-medium">Continue with Google</span> </button>
                 </form>
 
                 <p className="text-sm text-center text-gray-600 mt-6">
                     Already have an account?{" "}
-                    <Link to="/auth/login" className="text-[#0303b8] hover:underline">
+                    <Link to="/auth/login" className={`${theme === 'dark' ? "text-indigo-500": "text-[#0303b8]"}  hover:underline`}>
                         Login
                     </Link>
                 </p>

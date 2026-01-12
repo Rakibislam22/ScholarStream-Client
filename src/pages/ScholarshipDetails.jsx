@@ -8,7 +8,7 @@ import Loading from "../components/Loading";
 
 export default function ScholarshipDetails() {
     const { id } = useParams();
-    const { user, theme } = React.useContext(AuthContext);
+    const { user, theme } = use(AuthContext);
     const axiosIn = useAxios();
     const [scholarship, setScholarship] = useState(null);
     const [reviews, setReviews] = useState([]);
@@ -82,9 +82,9 @@ export default function ScholarshipDetails() {
     return (
         <div className="min-h-[80vh] py-12">
             {/* HERO / IMAGE */}
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-7xl mx-auto">
                 <div
-                    className={`rounded-2xl p-10 flex justify-center items-center mb-10
+                    className={`rounded-2xl p-8 flex justify-center items-center mb-5
         ${theme === "dark"
                             ? "bg-gradient-to-br from-gray-800 to-gray-900"
                             : "bg-gradient-to-br from-gray-50 to-white"}`}
@@ -146,9 +146,11 @@ export default function ScholarshipDetails() {
                     {/* CTA */}
                     <button
                         onClick={handleApply}
-                        className="mt-8 bg-[#0303b8] hover:bg-[#000064]
+                        className={`mt-8 ${theme === "dark"
+                            ? "bg-indigo-500 hover:bg-indigo-600"
+                            : ""} bg-[#0303b8] hover:bg-[#000064]
           text-white py-3 px-10 rounded-full
-          shadow-md hover:shadow-lg transition-all"
+          shadow-md hover:shadow-lg transition-all`}
                     >
                         Apply for Scholarship
                     </button>
